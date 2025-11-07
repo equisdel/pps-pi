@@ -1,0 +1,3620 @@
+{
+  "org.mybatis.jpetstore.mapper.LineItemMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.LineItemMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.LineItem",
+      "org.mybatis.jpetstore.domain.LineItem"
+    ],
+    "methods": {
+      "getLineItemsByOrderId": {
+        "name": "getLineItemsByOrderId",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "LineItem"
+        ]
+      },
+      "insertLineItem": {
+        "name": "insertLineItem",
+        "parametersDataType": [
+          "LineItem"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.Item": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Item",
+    "annotations": [
+      "Override"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String itemId",
+      "String productId",
+      "BigDecimal listPrice",
+      "BigDecimal unitCost",
+      "int supplierId",
+      "String status",
+      "String attribute1",
+      "String attribute2",
+      "String attribute3",
+      "String attribute4",
+      "String attribute5",
+      "Product product",
+      "int quantity"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product"
+    ],
+    "methods": {
+      "getQuantity": {
+        "name": "getQuantity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "setAttribute1": {
+        "name": "setAttribute1",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getUnitCost": {
+        "name": "getUnitCost",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "setAttribute4": {
+        "name": "setAttribute4",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setAttribute5": {
+        "name": "setAttribute5",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setAttribute2": {
+        "name": "setAttribute2",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setAttribute3": {
+        "name": "setAttribute3",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getStatus": {
+        "name": "getStatus",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getItemId": {
+        "name": "getItemId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setItemId": {
+        "name": "setItemId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setSupplierId": {
+        "name": "setSupplierId",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getAttribute4": {
+        "name": "getAttribute4",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setProduct": {
+        "name": "setProduct",
+        "parametersDataType": [
+          "Product"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getAttribute5": {
+        "name": "getAttribute5",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getProduct": {
+        "name": "getProduct",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "getAttribute2": {
+        "name": "getAttribute2",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getAttribute3": {
+        "name": "getAttribute3",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getAttribute1": {
+        "name": "getAttribute1",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setUnitCost": {
+        "name": "setUnitCost",
+        "parametersDataType": [
+          "BigDecimal"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setStatus": {
+        "name": "setStatus",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setQuantity": {
+        "name": "setQuantity",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getListPrice": {
+        "name": "getListPrice",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "getSupplierId": {
+        "name": "getSupplierId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "toString": {
+        "name": "toString",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setListPrice": {
+        "name": "setListPrice",
+        "parametersDataType": [
+          "BigDecimal"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "getProduct()",
+        "methodName": "getProductId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Product"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.web.actions.CatalogActionBean": {
+    "qualifiedName": "org.mybatis.jpetstore.web.actions.CatalogActionBean",
+    "annotations": [
+      "SpringBean",
+      "DefaultHandler",
+      "SessionScope"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String MAIN",
+      "String VIEW_CATEGORY",
+      "String VIEW_PRODUCT",
+      "String VIEW_ITEM",
+      "String SEARCH_PRODUCTS",
+      "CatalogService catalogService",
+      "String keyword",
+      "String categoryId",
+      "Category category",
+      "List\u003cCategory\u003e categoryList",
+      "String productId",
+      "Product product",
+      "List\u003cProduct\u003e productList",
+      "String itemId",
+      "Item item",
+      "List\u003cItem\u003e itemList"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.service.CatalogService",
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Category"
+    ],
+    "methods": {
+      "getItemList": {
+        "name": "getItemList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "getItem": {
+        "name": "getItem",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "getProductId": {
+        "name": "getProductId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getItemId": {
+        "name": "getItemId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setKeyword": {
+        "name": "setKeyword",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setCategory": {
+        "name": "setCategory",
+        "parametersDataType": [
+          "Category"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "viewCategory": {
+        "name": "viewCategory",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      },
+      "setCategoryId": {
+        "name": "setCategoryId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "searchProducts": {
+        "name": "searchProducts",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      },
+      "viewItem": {
+        "name": "viewItem",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      },
+      "setItemId": {
+        "name": "setItemId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getProductList": {
+        "name": "getProductList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "setItem": {
+        "name": "setItem",
+        "parametersDataType": [
+          "Item"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setProduct": {
+        "name": "setProduct",
+        "parametersDataType": [
+          "Product"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setCategoryList": {
+        "name": "setCategoryList",
+        "parametersDataType": [
+          "Category"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getProduct": {
+        "name": "getProduct",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "getCategoryList": {
+        "name": "getCategoryList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Category"
+        ]
+      },
+      "setProductList": {
+        "name": "setProductList",
+        "parametersDataType": [
+          "Product"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCategoryId": {
+        "name": "getCategoryId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setProductId": {
+        "name": "setProductId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCategory": {
+        "name": "getCategory",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Category"
+        ]
+      },
+      "clear": {
+        "name": "clear",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setItemList": {
+        "name": "setItemList",
+        "parametersDataType": [
+          "Item"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getKeyword": {
+        "name": "getKeyword",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "viewProduct": {
+        "name": "viewProduct",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      },
+      "viewMain": {
+        "name": "viewMain",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "catalogService",
+        "methodName": "getProductListByCategory",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getCategory",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getItemListByProduct",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getProduct",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "item",
+        "methodName": "getProduct",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "searchProductList",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": [
+      "org.mybatis.jpetstore.web.actions.AbstractActionBean"
+    ]
+  },
+  "org.mybatis.jpetstore.web.actions.AccountActionBean": {
+    "qualifiedName": "org.mybatis.jpetstore.web.actions.AccountActionBean",
+    "annotations": [
+      "SpringBean",
+      "DefaultHandler",
+      "SessionScope"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String NEW_ACCOUNT",
+      "String EDIT_ACCOUNT",
+      "String SIGNON",
+      "List\u003cString\u003e LANGUAGE_LIST",
+      "List\u003cString\u003e CATEGORY_LIST",
+      "AccountService accountService",
+      "CatalogService catalogService",
+      "Account account",
+      "List\u003cProduct\u003e myList",
+      "boolean authenticated",
+      "HttpSession s",
+      "String value"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.service.AccountService",
+      "org.mybatis.jpetstore.service.CatalogService",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Account"
+    ],
+    "methods": {
+      "setPassword": {
+        "name": "setPassword",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setUsername": {
+        "name": "setUsername",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getMyList": {
+        "name": "getMyList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "newAccountForm": {
+        "name": "newAccountForm",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "getLanguages": {
+        "name": "getLanguages",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "clear": {
+        "name": "clear",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "signon": {
+        "name": "signon",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "signoff": {
+        "name": "signoff",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "newAccount": {
+        "name": "newAccount",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "isAuthenticated": {
+        "name": "isAuthenticated",
+        "parametersDataType": [],
+        "returnDataType": [
+          "boolean"
+        ]
+      },
+      "getUsername": {
+        "name": "getUsername",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "signonForm": {
+        "name": "signonForm",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "getPassword": {
+        "name": "getPassword",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "editAccountForm": {
+        "name": "editAccountForm",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "editAccount": {
+        "name": "editAccount",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "setMyList": {
+        "name": "setMyList",
+        "parametersDataType": [
+          "Product"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCategories": {
+        "name": "getCategories",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getAccount": {
+        "name": "getAccount",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Account"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "account",
+        "methodName": "getUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "setUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getPassword",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "setPassword",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "accountService",
+        "methodName": "insertAccount",
+        "targetClassName": "org.mybatis.jpetstore.service.AccountService"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "accountService",
+        "methodName": "getAccount",
+        "targetClassName": "org.mybatis.jpetstore.service.AccountService"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getFavouriteCategoryId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getProductListByCategory",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "accountService",
+        "methodName": "updateAccount",
+        "targetClassName": "org.mybatis.jpetstore.service.AccountService"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "accountService",
+        "methodName": "getAccount",
+        "targetClassName": "org.mybatis.jpetstore.service.AccountService"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getFavouriteCategoryId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getProductListByCategory",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "accountService",
+        "methodName": "getAccount",
+        "targetClassName": "org.mybatis.jpetstore.service.AccountService"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "setPassword",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getFavouriteCategoryId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getProductListByCategory",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": [
+      "org.mybatis.jpetstore.web.actions.AbstractActionBean"
+    ]
+  },
+  "org.mybatis.jpetstore.mapper.SequenceMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.SequenceMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Sequence",
+      "org.mybatis.jpetstore.domain.Sequence",
+      "org.mybatis.jpetstore.domain.Sequence"
+    ],
+    "methods": {
+      "updateSequence": {
+        "name": "updateSequence",
+        "parametersDataType": [
+          "Sequence"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getSequence": {
+        "name": "getSequence",
+        "parametersDataType": [
+          "Sequence"
+        ],
+        "returnDataType": [
+          "Sequence"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.mapper.OrderMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.OrderMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order"
+    ],
+    "methods": {
+      "insertOrder": {
+        "name": "insertOrder",
+        "parametersDataType": [
+          "Order"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "insertOrderStatus": {
+        "name": "insertOrderStatus",
+        "parametersDataType": [
+          "Order"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getOrder": {
+        "name": "getOrder",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "Order"
+        ]
+      },
+      "getOrdersByUsername": {
+        "name": "getOrdersByUsername",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Order"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.web.actions.AbstractActionBean": {
+    "qualifiedName": "org.mybatis.jpetstore.web.actions.AbstractActionBean",
+    "annotations": [
+      "Override"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String ERROR",
+      "ActionBeanContext context"
+    ],
+    "dependencies": [],
+    "methods": {
+      "setContext": {
+        "name": "setContext",
+        "parametersDataType": [
+          "ActionBeanContext"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setMessage": {
+        "name": "setMessage",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getContext": {
+        "name": "getContext",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ActionBeanContext"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.Sequence": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Sequence",
+    "annotations": [],
+    "variables": [
+      "long serialVersionUID",
+      "String name",
+      "int nextId"
+    ],
+    "dependencies": [],
+    "methods": {
+      "setName": {
+        "name": "setName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getName": {
+        "name": "getName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getNextId": {
+        "name": "getNextId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "setNextId": {
+        "name": "setNextId",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.Order": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Order",
+    "annotations": [],
+    "variables": [
+      "long serialVersionUID",
+      "int orderId",
+      "String username",
+      "Date orderDate",
+      "String shipAddress1",
+      "String shipAddress2",
+      "String shipCity",
+      "String shipState",
+      "String shipZip",
+      "String shipCountry",
+      "String billAddress1",
+      "String billAddress2",
+      "String billCity",
+      "String billState",
+      "String billZip",
+      "String billCountry",
+      "String courier",
+      "BigDecimal totalPrice",
+      "String billToFirstName",
+      "String billToLastName",
+      "String shipToFirstName",
+      "String shipToLastName",
+      "String creditCard",
+      "String expiryDate",
+      "String cardType",
+      "String locale",
+      "String status",
+      "List\u003cLineItem\u003e lineItems",
+      "Iterator\u003cCartItem\u003e i",
+      "CartItem cartItem",
+      "LineItem lineItem"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.LineItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.LineItem",
+      "org.mybatis.jpetstore.domain.LineItem",
+      "org.mybatis.jpetstore.domain.LineItem",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Cart"
+    ],
+    "methods": {
+      "getShipState": {
+        "name": "getShipState",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setBillCity": {
+        "name": "setBillCity",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setBillToLastName": {
+        "name": "setBillToLastName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getBillAddress1": {
+        "name": "getBillAddress1",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getOrderId": {
+        "name": "getOrderId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "getBillAddress2": {
+        "name": "getBillAddress2",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getCreditCard": {
+        "name": "getCreditCard",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setBillState": {
+        "name": "setBillState",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setOrderId": {
+        "name": "setOrderId",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getStatus": {
+        "name": "getStatus",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getCourier": {
+        "name": "getCourier",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setCreditCard": {
+        "name": "setCreditCard",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setLineItems": {
+        "name": "setLineItems",
+        "parametersDataType": [
+          "LineItem"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setShipToFirstName": {
+        "name": "setShipToFirstName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setShipZip": {
+        "name": "setShipZip",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getShipZip": {
+        "name": "getShipZip",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getBillZip": {
+        "name": "getBillZip",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "addLineItem": {
+        "name": "addLineItem",
+        "parametersDataType": [
+          "LineItem"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setShipAddress2": {
+        "name": "setShipAddress2",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setShipAddress1": {
+        "name": "setShipAddress1",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getBillToFirstName": {
+        "name": "getBillToFirstName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setExpiryDate": {
+        "name": "setExpiryDate",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setOrderDate": {
+        "name": "setOrderDate",
+        "parametersDataType": [
+          "Date"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getTotalPrice": {
+        "name": "getTotalPrice",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "getBillState": {
+        "name": "getBillState",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setCourier": {
+        "name": "setCourier",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCardType": {
+        "name": "getCardType",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getShipCity": {
+        "name": "getShipCity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setShipState": {
+        "name": "setShipState",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setLocale": {
+        "name": "setLocale",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getShipCountry": {
+        "name": "getShipCountry",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setShipCountry": {
+        "name": "setShipCountry",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getShipToFirstName": {
+        "name": "getShipToFirstName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getUsername": {
+        "name": "getUsername",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setShipToLastName": {
+        "name": "setShipToLastName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getShipToLastName": {
+        "name": "getShipToLastName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getBillCity": {
+        "name": "getBillCity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setBillCountry": {
+        "name": "setBillCountry",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getLineItems": {
+        "name": "getLineItems",
+        "parametersDataType": [],
+        "returnDataType": [
+          "LineItem"
+        ]
+      },
+      "initOrder": {
+        "name": "initOrder",
+        "parametersDataType": [
+          "Account",
+          "Cart"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getShipAddress1": {
+        "name": "getShipAddress1",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setTotalPrice": {
+        "name": "setTotalPrice",
+        "parametersDataType": [
+          "BigDecimal"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setUsername": {
+        "name": "setUsername",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getExpiryDate": {
+        "name": "getExpiryDate",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getOrderDate": {
+        "name": "getOrderDate",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Date"
+        ]
+      },
+      "setBillZip": {
+        "name": "setBillZip",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setStatus": {
+        "name": "setStatus",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setShipCity": {
+        "name": "setShipCity",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setBillToFirstName": {
+        "name": "setBillToFirstName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getBillToLastName": {
+        "name": "getBillToLastName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getBillCountry": {
+        "name": "getBillCountry",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setCardType": {
+        "name": "setCardType",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setBillAddress2": {
+        "name": "setBillAddress2",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setBillAddress1": {
+        "name": "setBillAddress1",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getLocale": {
+        "name": "getLocale",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getShipAddress2": {
+        "name": "getShipAddress2",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "account",
+        "methodName": "getUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getFirstName",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getLastName",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getAddress1",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getAddress2",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getCity",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getState",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getZip",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getCountry",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getFirstName",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getLastName",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getAddress1",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getAddress2",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getCity",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getState",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getZip",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getCountry",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      },
+      {
+        "scopeName": "cart",
+        "methodName": "getSubTotal",
+        "targetClassName": "org.mybatis.jpetstore.domain.Cart"
+      },
+      {
+        "scopeName": "cart",
+        "methodName": "getAllCartItems",
+        "targetClassName": "org.mybatis.jpetstore.domain.Cart"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.LineItem": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.LineItem",
+    "annotations": [],
+    "variables": [
+      "long serialVersionUID",
+      "int orderId",
+      "int lineNumber",
+      "int quantity",
+      "String itemId",
+      "BigDecimal unitPrice",
+      "Item item",
+      "BigDecimal total"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item"
+    ],
+    "methods": {
+      "getQuantity": {
+        "name": "getQuantity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "setUnitPrice": {
+        "name": "setUnitPrice",
+        "parametersDataType": [
+          "BigDecimal"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getOrderId": {
+        "name": "getOrderId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "getItem": {
+        "name": "getItem",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "setOrderId": {
+        "name": "setOrderId",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getLineNumber": {
+        "name": "getLineNumber",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "calculateTotal": {
+        "name": "calculateTotal",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getItemId": {
+        "name": "getItemId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setQuantity": {
+        "name": "setQuantity",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setLineNumber": {
+        "name": "setLineNumber",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getTotal": {
+        "name": "getTotal",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "setItemId": {
+        "name": "setItemId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getUnitPrice": {
+        "name": "getUnitPrice",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "setItem": {
+        "name": "setItem",
+        "parametersDataType": [
+          "Item"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "cartItem",
+        "methodName": "getQuantity",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem.getItem()",
+        "methodName": "getItemId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem.getItem()",
+        "methodName": "getListPrice",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.Category": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Category",
+    "annotations": [
+      "Override"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String categoryId",
+      "String name",
+      "String description"
+    ],
+    "dependencies": [],
+    "methods": {
+      "setName": {
+        "name": "setName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getName": {
+        "name": "getName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getCategoryId": {
+        "name": "getCategoryId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setCategoryId": {
+        "name": "setCategoryId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "toString": {
+        "name": "toString",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setDescription": {
+        "name": "setDescription",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getDescription": {
+        "name": "getDescription",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.Account": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Account",
+    "annotations": [],
+    "variables": [
+      "long serialVersionUID",
+      "String username",
+      "String password",
+      "String email",
+      "String firstName",
+      "String lastName",
+      "String status",
+      "String address1",
+      "String address2",
+      "String city",
+      "String state",
+      "String zip",
+      "String country",
+      "String phone",
+      "String favouriteCategoryId",
+      "String languagePreference",
+      "boolean listOption",
+      "boolean bannerOption",
+      "String bannerName"
+    ],
+    "dependencies": [],
+    "methods": {
+      "getPhone": {
+        "name": "getPhone",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setPassword": {
+        "name": "setPassword",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setCountry": {
+        "name": "setCountry",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "isBannerOption": {
+        "name": "isBannerOption",
+        "parametersDataType": [],
+        "returnDataType": [
+          "boolean"
+        ]
+      },
+      "getAddress2": {
+        "name": "getAddress2",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getCountry": {
+        "name": "getCountry",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getAddress1": {
+        "name": "getAddress1",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setFavouriteCategoryId": {
+        "name": "setFavouriteCategoryId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getStatus": {
+        "name": "getStatus",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getFavouriteCategoryId": {
+        "name": "getFavouriteCategoryId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getUsername": {
+        "name": "getUsername",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setLastName": {
+        "name": "setLastName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setAddress1": {
+        "name": "setAddress1",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "isListOption": {
+        "name": "isListOption",
+        "parametersDataType": [],
+        "returnDataType": [
+          "boolean"
+        ]
+      },
+      "setZip": {
+        "name": "setZip",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCity": {
+        "name": "getCity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getZip": {
+        "name": "getZip",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setUsername": {
+        "name": "setUsername",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setBannerOption": {
+        "name": "setBannerOption",
+        "parametersDataType": [
+          "boolean"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setCity": {
+        "name": "setCity",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setPhone": {
+        "name": "setPhone",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getLastName": {
+        "name": "getLastName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setStatus": {
+        "name": "setStatus",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setAddress2": {
+        "name": "setAddress2",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setListOption": {
+        "name": "setListOption",
+        "parametersDataType": [
+          "boolean"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getPassword": {
+        "name": "getPassword",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getBannerName": {
+        "name": "getBannerName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getState": {
+        "name": "getState",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setEmail": {
+        "name": "setEmail",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setFirstName": {
+        "name": "setFirstName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getLanguagePreference": {
+        "name": "getLanguagePreference",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getEmail": {
+        "name": "getEmail",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setState": {
+        "name": "setState",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setBannerName": {
+        "name": "setBannerName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getFirstName": {
+        "name": "getFirstName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setLanguagePreference": {
+        "name": "setLanguagePreference",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.service.AccountService": {
+    "qualifiedName": "org.mybatis.jpetstore.service.AccountService",
+    "annotations": [
+      "Transactional",
+      "Service"
+    ],
+    "variables": [
+      "AccountMapper accountMapper"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.mapper.AccountMapper",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account"
+    ],
+    "methods": {
+      "insertAccount": {
+        "name": "insertAccount",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getAccount": {
+        "name": "getAccount",
+        "parametersDataType": [
+          "String",
+          "String"
+        ],
+        "returnDataType": [
+          "Account"
+        ]
+      },
+      "updateAccount": {
+        "name": "updateAccount",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "accountMapper",
+        "methodName": "getAccountByUsername",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "getAccountByUsernameAndPassword",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "insertAccount",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "insertProfile",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "insertSignon",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "updateAccount",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "updateProfile",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "accountMapper",
+        "methodName": "updateSignon",
+        "targetClassName": "org.mybatis.jpetstore.mapper.AccountMapper"
+      },
+      {
+        "scopeName": "account",
+        "methodName": "getPassword",
+        "targetClassName": "org.mybatis.jpetstore.domain.Account"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.mapper.ProductMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.ProductMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product"
+    ],
+    "methods": {
+      "getProduct": {
+        "name": "getProduct",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "searchProductList": {
+        "name": "searchProductList",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "getProductListByCategory": {
+        "name": "getProductListByCategory",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Product"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.CartItem": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.CartItem",
+    "annotations": [],
+    "variables": [
+      "long serialVersionUID",
+      "Item item",
+      "int quantity",
+      "boolean inStock",
+      "BigDecimal total"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item"
+    ],
+    "methods": {
+      "incrementQuantity": {
+        "name": "incrementQuantity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "calculateTotal": {
+        "name": "calculateTotal",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getQuantity": {
+        "name": "getQuantity",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "setInStock": {
+        "name": "setInStock",
+        "parametersDataType": [
+          "boolean"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setQuantity": {
+        "name": "setQuantity",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getItem": {
+        "name": "getItem",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "getTotal": {
+        "name": "getTotal",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "isInStock": {
+        "name": "isInStock",
+        "parametersDataType": [],
+        "returnDataType": [
+          "boolean"
+        ]
+      },
+      "setItem": {
+        "name": "setItem",
+        "parametersDataType": [
+          "Item"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.mapper.CategoryMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.CategoryMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Category"
+    ],
+    "methods": {
+      "getCategoryList": {
+        "name": "getCategoryList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Category"
+        ]
+      },
+      "getCategory": {
+        "name": "getCategory",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Category"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.domain.Cart": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Cart",
+    "annotations": [],
+    "variables": [
+      "long serialVersionUID",
+      "Map\u003cString,CartItem\u003e itemMap",
+      "List\u003cCartItem\u003e itemList",
+      "CartItem cartItem",
+      "CartItem cartItem",
+      "CartItem cartItem",
+      "CartItem cartItem"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.CartItem"
+    ],
+    "methods": {
+      "addItem": {
+        "name": "addItem",
+        "parametersDataType": [
+          "Item",
+          "boolean"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getAllCartItems": {
+        "name": "getAllCartItems",
+        "parametersDataType": [],
+        "returnDataType": [
+          "CartItem"
+        ]
+      },
+      "getCartItems": {
+        "name": "getCartItems",
+        "parametersDataType": [],
+        "returnDataType": [
+          "CartItem"
+        ]
+      },
+      "incrementQuantityByItemId": {
+        "name": "incrementQuantityByItemId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getSubTotal": {
+        "name": "getSubTotal",
+        "parametersDataType": [],
+        "returnDataType": [
+          "BigDecimal"
+        ]
+      },
+      "removeItemById": {
+        "name": "removeItemById",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "setQuantityByItemId": {
+        "name": "setQuantityByItemId",
+        "parametersDataType": [
+          "String",
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCartItemList": {
+        "name": "getCartItemList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "CartItem"
+        ]
+      },
+      "getNumberOfItems": {
+        "name": "getNumberOfItems",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "containsItemId": {
+        "name": "containsItemId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "boolean"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "item",
+        "methodName": "getItemId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "setItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "setQuantity",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "setInStock",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "item",
+        "methodName": "getItemId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "incrementQuantity",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "incrementQuantity",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "setQuantity",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.web.actions.CartActionBean": {
+    "qualifiedName": "org.mybatis.jpetstore.web.actions.CartActionBean",
+    "annotations": [
+      "SpringBean",
+      "SessionScope"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String VIEW_CART",
+      "String CHECK_OUT",
+      "CatalogService catalogService",
+      "Cart cart",
+      "String workingItemId",
+      "boolean isInStock",
+      "Item item",
+      "Item item",
+      "HttpServletRequest request",
+      "Iterator\u003cCartItem\u003e cartItems",
+      "CartItem cartItem",
+      "String itemId",
+      "int quantity"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.service.CatalogService",
+      "org.mybatis.jpetstore.domain.Cart",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.CartItem",
+      "org.mybatis.jpetstore.domain.Cart",
+      "org.mybatis.jpetstore.domain.Cart"
+    ],
+    "methods": {
+      "updateCartQuantities": {
+        "name": "updateCartQuantities",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "clear": {
+        "name": "clear",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setCart": {
+        "name": "setCart",
+        "parametersDataType": [
+          "Cart"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setWorkingItemId": {
+        "name": "setWorkingItemId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "viewCart": {
+        "name": "viewCart",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      },
+      "getCart": {
+        "name": "getCart",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Cart"
+        ]
+      },
+      "addItemToCart": {
+        "name": "addItemToCart",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "checkOut": {
+        "name": "checkOut",
+        "parametersDataType": [],
+        "returnDataType": [
+          "ForwardResolution"
+        ]
+      },
+      "removeItemFromCart": {
+        "name": "removeItemFromCart",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "cart",
+        "methodName": "containsItemId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Cart"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "isItemInStock",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "catalogService",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.service.CatalogService"
+      },
+      {
+        "scopeName": "cart",
+        "methodName": "addItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.Cart"
+      },
+      {
+        "scopeName": "cart",
+        "methodName": "incrementQuantityByItemId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Cart"
+      },
+      {
+        "scopeName": "cart",
+        "methodName": "removeItemById",
+        "targetClassName": "org.mybatis.jpetstore.domain.Cart"
+      },
+      {
+        "scopeName": "cartItem",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.domain.CartItem"
+      },
+      {
+        "scopeName": "cartItem.getItem()",
+        "methodName": "getItemId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": [
+      "org.mybatis.jpetstore.web.actions.AbstractActionBean"
+    ]
+  },
+  "org.mybatis.jpetstore.domain.Product": {
+    "qualifiedName": "org.mybatis.jpetstore.domain.Product",
+    "annotations": [
+      "Override"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String productId",
+      "String categoryId",
+      "String name",
+      "String description"
+    ],
+    "dependencies": [],
+    "methods": {
+      "setName": {
+        "name": "setName",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getName": {
+        "name": "getName",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setProductId": {
+        "name": "setProductId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCategoryId": {
+        "name": "getCategoryId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setCategoryId": {
+        "name": "setCategoryId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "toString": {
+        "name": "toString",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "setDescription": {
+        "name": "setDescription",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getDescription": {
+        "name": "getDescription",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "getProductId": {
+        "name": "getProductId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.service.CatalogService": {
+    "qualifiedName": "org.mybatis.jpetstore.service.CatalogService",
+    "annotations": [
+      "Service"
+    ],
+    "variables": [
+      "CategoryMapper categoryMapper",
+      "ItemMapper itemMapper",
+      "ProductMapper productMapper",
+      "List\u003cProduct\u003e products",
+      "String keyword"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.mapper.CategoryMapper",
+      "org.mybatis.jpetstore.mapper.ItemMapper",
+      "org.mybatis.jpetstore.mapper.ProductMapper",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Category",
+      "org.mybatis.jpetstore.domain.Product",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item"
+    ],
+    "methods": {
+      "getProduct": {
+        "name": "getProduct",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "searchProductList": {
+        "name": "searchProductList",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "getCategoryList": {
+        "name": "getCategoryList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Category"
+        ]
+      },
+      "getCategory": {
+        "name": "getCategory",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Category"
+        ]
+      },
+      "getProductListByCategory": {
+        "name": "getProductListByCategory",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Product"
+        ]
+      },
+      "getItemListByProduct": {
+        "name": "getItemListByProduct",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "getItem": {
+        "name": "getItem",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "isItemInStock": {
+        "name": "isItemInStock",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "boolean"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "categoryMapper",
+        "methodName": "getCategoryList",
+        "targetClassName": "org.mybatis.jpetstore.mapper.CategoryMapper"
+      },
+      {
+        "scopeName": "categoryMapper",
+        "methodName": "getCategory",
+        "targetClassName": "org.mybatis.jpetstore.mapper.CategoryMapper"
+      },
+      {
+        "scopeName": "productMapper",
+        "methodName": "getProduct",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ProductMapper"
+      },
+      {
+        "scopeName": "productMapper",
+        "methodName": "getProductListByCategory",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ProductMapper"
+      },
+      {
+        "scopeName": "productMapper",
+        "methodName": "searchProductList",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ProductMapper"
+      },
+      {
+        "scopeName": "itemMapper",
+        "methodName": "getItemListByProduct",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ItemMapper"
+      },
+      {
+        "scopeName": "itemMapper",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ItemMapper"
+      },
+      {
+        "scopeName": "itemMapper",
+        "methodName": "getInventoryQuantity",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ItemMapper"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.service.OrderService": {
+    "qualifiedName": "org.mybatis.jpetstore.service.OrderService",
+    "annotations": [
+      "Transactional",
+      "Service"
+    ],
+    "variables": [
+      "ItemMapper itemMapper",
+      "OrderMapper orderMapper",
+      "SequenceMapper sequenceMapper",
+      "LineItemMapper lineItemMapper",
+      "String itemId",
+      "Integer increment",
+      "Map\u003cString,Object\u003e param",
+      "Order order",
+      "Item item",
+      "Sequence sequence",
+      "Sequence parameterObject"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.mapper.ItemMapper",
+      "org.mybatis.jpetstore.mapper.OrderMapper",
+      "org.mybatis.jpetstore.mapper.SequenceMapper",
+      "org.mybatis.jpetstore.mapper.LineItemMapper",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Sequence",
+      "org.mybatis.jpetstore.domain.Sequence",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order"
+    ],
+    "methods": {
+      "insertOrder": {
+        "name": "insertOrder",
+        "parametersDataType": [
+          "Order"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getOrder": {
+        "name": "getOrder",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "Order"
+        ]
+      },
+      "getNextId": {
+        "name": "getNextId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "getOrdersByUsername": {
+        "name": "getOrdersByUsername",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Order"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "order",
+        "methodName": "setOrderId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "itemMapper",
+        "methodName": "updateInventoryQuantity",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ItemMapper"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "getLineItems",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "orderMapper",
+        "methodName": "insertOrder",
+        "targetClassName": "org.mybatis.jpetstore.mapper.OrderMapper"
+      },
+      {
+        "scopeName": "orderMapper",
+        "methodName": "insertOrderStatus",
+        "targetClassName": "org.mybatis.jpetstore.mapper.OrderMapper"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "getOrderId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "lineItemMapper",
+        "methodName": "insertLineItem",
+        "targetClassName": "org.mybatis.jpetstore.mapper.LineItemMapper"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "getLineItems",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "orderMapper",
+        "methodName": "getOrder",
+        "targetClassName": "org.mybatis.jpetstore.mapper.OrderMapper"
+      },
+      {
+        "scopeName": "lineItemMapper",
+        "methodName": "getLineItemsByOrderId",
+        "targetClassName": "org.mybatis.jpetstore.mapper.LineItemMapper"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "setLineItems",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "itemMapper",
+        "methodName": "getItem",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ItemMapper"
+      },
+      {
+        "scopeName": "itemMapper",
+        "methodName": "getInventoryQuantity",
+        "targetClassName": "org.mybatis.jpetstore.mapper.ItemMapper"
+      },
+      {
+        "scopeName": "item",
+        "methodName": "setQuantity",
+        "targetClassName": "org.mybatis.jpetstore.domain.Item"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "getLineItems",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "orderMapper",
+        "methodName": "getOrdersByUsername",
+        "targetClassName": "org.mybatis.jpetstore.mapper.OrderMapper"
+      },
+      {
+        "scopeName": "sequenceMapper",
+        "methodName": "getSequence",
+        "targetClassName": "org.mybatis.jpetstore.mapper.SequenceMapper"
+      },
+      {
+        "scopeName": "sequence",
+        "methodName": "getNextId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Sequence"
+      },
+      {
+        "scopeName": "sequenceMapper",
+        "methodName": "updateSequence",
+        "targetClassName": "org.mybatis.jpetstore.mapper.SequenceMapper"
+      },
+      {
+        "scopeName": "sequence",
+        "methodName": "getNextId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Sequence"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.web.actions.OrderActionBean": {
+    "qualifiedName": "org.mybatis.jpetstore.web.actions.OrderActionBean",
+    "annotations": [
+      "SpringBean",
+      "SessionScope"
+    ],
+    "variables": [
+      "long serialVersionUID",
+      "String CONFIRM_ORDER",
+      "String LIST_ORDERS",
+      "String NEW_ORDER",
+      "String SHIPPING",
+      "String VIEW_ORDER",
+      "List\u003cString\u003e CARD_TYPE_LIST",
+      "OrderService orderService",
+      "Order order",
+      "boolean shippingAddressRequired",
+      "boolean confirmed",
+      "List\u003cOrder\u003e orderList",
+      "HttpSession session",
+      "AccountActionBean accountBean",
+      "HttpSession session",
+      "AccountActionBean accountBean",
+      "CartActionBean cartBean",
+      "HttpSession session",
+      "CartActionBean cartBean",
+      "HttpSession session",
+      "AccountActionBean accountBean"
+    ],
+    "dependencies": [
+      "org.mybatis.jpetstore.service.OrderService",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.web.actions.AccountActionBean",
+      "org.mybatis.jpetstore.web.actions.AccountActionBean",
+      "org.mybatis.jpetstore.web.actions.CartActionBean",
+      "org.mybatis.jpetstore.web.actions.CartActionBean",
+      "org.mybatis.jpetstore.web.actions.AccountActionBean",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order",
+      "org.mybatis.jpetstore.domain.Order"
+    ],
+    "methods": {
+      "getOrderList": {
+        "name": "getOrderList",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Order"
+        ]
+      },
+      "listOrders": {
+        "name": "listOrders",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "clear": {
+        "name": "clear",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getOrderId": {
+        "name": "getOrderId",
+        "parametersDataType": [],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "setShippingAddressRequired": {
+        "name": "setShippingAddressRequired",
+        "parametersDataType": [
+          "boolean"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setOrderId": {
+        "name": "setOrderId",
+        "parametersDataType": [
+          "int"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setConfirmed": {
+        "name": "setConfirmed",
+        "parametersDataType": [
+          "boolean"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setOrder": {
+        "name": "setOrder",
+        "parametersDataType": [
+          "Order"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getCreditCardTypes": {
+        "name": "getCreditCardTypes",
+        "parametersDataType": [],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "viewOrder": {
+        "name": "viewOrder",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "isShippingAddressRequired": {
+        "name": "isShippingAddressRequired",
+        "parametersDataType": [],
+        "returnDataType": [
+          "boolean"
+        ]
+      },
+      "newOrderForm": {
+        "name": "newOrderForm",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      },
+      "getOrder": {
+        "name": "getOrder",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Order"
+        ]
+      },
+      "isConfirmed": {
+        "name": "isConfirmed",
+        "parametersDataType": [],
+        "returnDataType": [
+          "boolean"
+        ]
+      },
+      "newOrder": {
+        "name": "newOrder",
+        "parametersDataType": [],
+        "returnDataType": [
+          "Resolution"
+        ]
+      }
+    },
+    "methodInvocations": [
+      {
+        "scopeName": "order",
+        "methodName": "getOrderId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "setOrderId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "accountBean",
+        "methodName": "getAccount",
+        "targetClassName": "org.mybatis.jpetstore.web.actions.AccountActionBean"
+      },
+      {
+        "scopeName": "orderService",
+        "methodName": "getOrdersByUsername",
+        "targetClassName": "org.mybatis.jpetstore.service.OrderService"
+      },
+      {
+        "scopeName": "accountBean",
+        "methodName": "isAuthenticated",
+        "targetClassName": "org.mybatis.jpetstore.web.actions.AccountActionBean"
+      },
+      {
+        "scopeName": "accountBean",
+        "methodName": "getAccount",
+        "targetClassName": "org.mybatis.jpetstore.web.actions.AccountActionBean"
+      },
+      {
+        "scopeName": "cartBean",
+        "methodName": "getCart",
+        "targetClassName": "org.mybatis.jpetstore.web.actions.CartActionBean"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "initOrder",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "orderService",
+        "methodName": "insertOrder",
+        "targetClassName": "org.mybatis.jpetstore.service.OrderService"
+      },
+      {
+        "scopeName": "cartBean",
+        "methodName": "clear",
+        "targetClassName": "org.mybatis.jpetstore.web.actions.CartActionBean"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "getOrderId",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "orderService",
+        "methodName": "getOrder",
+        "targetClassName": "org.mybatis.jpetstore.service.OrderService"
+      },
+      {
+        "scopeName": "order",
+        "methodName": "getUsername",
+        "targetClassName": "org.mybatis.jpetstore.domain.Order"
+      },
+      {
+        "scopeName": "accountBean",
+        "methodName": "getAccount",
+        "targetClassName": "org.mybatis.jpetstore.web.actions.AccountActionBean"
+      }
+    ],
+    "implementedTypes": [],
+    "extendedTypes": [
+      "org.mybatis.jpetstore.web.actions.AbstractActionBean"
+    ]
+  },
+  "org.mybatis.jpetstore.mapper.AccountMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.AccountMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account",
+      "org.mybatis.jpetstore.domain.Account"
+    ],
+    "methods": {
+      "updateSignon": {
+        "name": "updateSignon",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "insertProfile": {
+        "name": "insertProfile",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "insertAccount": {
+        "name": "insertAccount",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "updateProfile": {
+        "name": "updateProfile",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getAccountByUsername": {
+        "name": "getAccountByUsername",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Account"
+        ]
+      },
+      "insertSignon": {
+        "name": "insertSignon",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getAccountByUsernameAndPassword": {
+        "name": "getAccountByUsernameAndPassword",
+        "parametersDataType": [
+          "String",
+          "String"
+        ],
+        "returnDataType": [
+          "Account"
+        ]
+      },
+      "updateAccount": {
+        "name": "updateAccount",
+        "parametersDataType": [
+          "Account"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.ScreenTransitionIT": {
+    "qualifiedName": "org.mybatis.jpetstore.ScreenTransitionIT",
+    "annotations": [
+      "AfterEach",
+      "BeforeAll",
+      "Test"
+    ],
+    "variables": [
+      "SelenideElement element",
+      "String orderId",
+      "String userId",
+      "Matcher matcher",
+      "String orderId"
+    ],
+    "dependencies": [],
+    "methods": {
+      "testSelectItems": {
+        "name": "testSelectItems",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testQuickLinks": {
+        "name": "testQuickLinks",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testLogoContent": {
+        "name": "testLogoContent",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testViewCart": {
+        "name": "testViewCart",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testSidebarContentOnTopPage": {
+        "name": "testSidebarContentOnTopPage",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testRegistrationUser": {
+        "name": "testRegistrationUser",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testViewHelp": {
+        "name": "testViewHelp",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "logout": {
+        "name": "logout",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "extractOrderId": {
+        "name": "extractOrderId",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "String"
+        ]
+      },
+      "testUpdateProfile": {
+        "name": "testUpdateProfile",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testMainImageContentOnTopPage": {
+        "name": "testMainImageContentOnTopPage",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "testOrder": {
+        "name": "testOrder",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "setupSelenide": {
+        "name": "setupSelenide",
+        "parametersDataType": [],
+        "returnDataType": [
+          "void"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  },
+  "org.mybatis.jpetstore.mapper.ItemMapper": {
+    "qualifiedName": "org.mybatis.jpetstore.mapper.ItemMapper",
+    "annotations": [],
+    "variables": [],
+    "dependencies": [
+      "org.mybatis.jpetstore.domain.Item",
+      "org.mybatis.jpetstore.domain.Item"
+    ],
+    "methods": {
+      "getInventoryQuantity": {
+        "name": "getInventoryQuantity",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "int"
+        ]
+      },
+      "updateInventoryQuantity": {
+        "name": "updateInventoryQuantity",
+        "parametersDataType": [
+          "String",
+          "Object"
+        ],
+        "returnDataType": [
+          "void"
+        ]
+      },
+      "getItemListByProduct": {
+        "name": "getItemListByProduct",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Item"
+        ]
+      },
+      "getItem": {
+        "name": "getItem",
+        "parametersDataType": [
+          "String"
+        ],
+        "returnDataType": [
+          "Item"
+        ]
+      }
+    },
+    "methodInvocations": [],
+    "implementedTypes": [],
+    "extendedTypes": []
+  }
+}

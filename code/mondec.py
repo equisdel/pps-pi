@@ -1,0 +1,283 @@
+import pickle
+import random
+import time
+import matplotlib
+import matplotlib.pyplot as plt
+import networkx as nx
+from pymoo.indicators.hv import HV
+import numpy as np
+
+
+
+from plots import plot_evolution, pareto_front_3d, plot_pareto_front, plot_radar_chart, plot_parallel_coordinates
+
+matplotlib.use('TkAgg')
+import numpy as np
+from collections import defaultdict
+from deap import base, creator, tools, algorithms
+
+from metrics import sm, ifn, ned, icp
+
+GRAPH_FILENAME = "monoliths/jpetstore/graph.pkl"
+METADATA = "monoliths/jpetstore/metadata.json"
+
+DEFAULT = {
+    "pop_size": 200,
+    "num_generations": 200,
+    "hof_size": 10,
+    "mu": 100,
+    "lambda": 200,
+    "mut_prob": 0.1,
+    "cx_prob": 0.9,
+    "normalize_obj": False,
+    "verbose": False
+}
+
+with open(GRAPH_FILENAME, 'rb') as file:
+    graph = pickle.load(file)
+    plt.figure(figsize=(10, 8))
+    pos = nx.spring_layout(graph, seed=42)  # layout más legible para grafos pequeños
+    nx.draw(graph, pos, with_labels=True, node_size=500, node_color="skyblue", font_size=8)
+    #plt.show()
+
+    #print(type(graph))
+    #time.sleep(10)
+    nodes_to_remove = [node for node in graph.nodes if 'test' in node.lower() or 'transition' in node.lower()]
+    graph.remove_nodes_from(nodes_to_remove)
+
+N_OBJECTIVES = 4                # NED, SM, ICP, IN
+MINS = [0.0,0.0,0.0,0.4]#[ 0.0, 0.0, 0.3, 0.6]    # Para normalización
+MAXS = [1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
+
+N_CLASSES = len(graph.nodes)    # 24
+CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)} # mapeo de clases con ids de 0 a N-1
+#print("mapeo de clases:")
+#print(CLASS_MAPPING)
+time.sleep(10)
+MAX_MICROSERVICES = N_CLASSES   # máxima cantidad de bins: 24 (caso extremo, una clase por microservicio)
+P = 12  # c'est quoi?
+OBJECTIVES = {      # mapeo de objetivos con identificadores
+    0: 'NED',
+    1: 'SM',
+    2: 'ICP',
+    3: 'IN',
+}
+
+
+def validate_mapper_constraint(individual):
+    microservice_to_tables = defaultdict(set)
+    mapper_classes = {i for i, cls in CLASS_MAPPING.items() if "mapper" in cls.lower() and not "test" in cls.lower()}
+    for class_idx, microservice_id in enumerate(individual):
+        if class_idx in mapper_classes:
+            microservice_to_tables[microservice_id].add(class_idx)
+    table_to_microservices = defaultdict(set)
+    for microservice_id, tables in microservice_to_tables.items():
+        for table in tables:
+            table_to_microservices[table].add(microservice_id)
+    for microservices in table_to_microservices.values():
+        if len(microservices) > 1:
+            return False
+    return True
+
+
+def mutate_class_assignment(individual):
+    idx = random.randint(0, N_CLASSES - 1)
+    individual[idx] = random.randint(0, MAX_MICROSERVICES - 1)
+    return individual,
+
+def normalize(fitness):
+    return [(v - mi)/(ma - mi + 1e-9) for v, mi, ma in zip(fitness, MINS, MAXS)]
+
+def denormalize(fitness):
+    return [v * (ma - mi) + mi for v, mi, ma in zip(fitness, MINS, MAXS)]
+
+
+def evaluate(individual):
+
+    partitions = individual_to_microservices(individual)
+    sm_value = sm(partitions, graph)
+    in_value = ifn(partitions, graph)
+    ned_value = ned(partitions)
+    icp_value = icp(partitions, graph)
+    
+    if not validate_mapper_constraint(individual):
+        return 10000, 10000, -10000, 10000      # Eliminar el individuo directamente (comentario original)
+
+    values = [ned_value, sm_value, icp_value, in_value]
+    if DEFAULT["normalize_obj"]:
+        values = normalize(values)
+
+    return tuple(values)
+
+
+def individual_to_microservices(individual):
+    partitions = defaultdict(list)
+    for class_id, microservice_id in enumerate(individual):
+        partitions[microservice_id].append(CLASS_MAPPING.get(class_id))
+
+    old_to_new_id = {old_id: new_id for new_id, old_id in enumerate(sorted(partitions.keys()))}
+    sequential_partitions = {old_to_new_id[old_id]: sorted(classes) for old_id, classes in partitions.items()}
+    return sequential_partitions
+
+
+def configure_nsga_iii(pop_size=100):
+    # Maximized SM, minimized IN, minimized NED, minimized ICP
+    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, 1.0, -1.0, -1.0))
+    creator.create("Individual", list, fitness=creator.FitnessMulti)
+    toolbox = base.Toolbox()
+    toolbox.register("attr_int", random.randint, 0, MAX_MICROSERVICES - 1)
+    toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, n=N_CLASSES)
+    toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)   # tamaño de la población: 100
+    toolbox.register("mate", tools.cxTwoPoint)
+    toolbox.register("mutate", mutate_class_assignment)
+    ref_points = tools.uniform_reference_points(nobj=N_OBJECTIVES, p=P)
+    toolbox.register("select", tools.selNSGA3, ref_points=ref_points) #corregir en el paper
+    toolbox.register("evaluate", evaluate)
+    return toolbox
+
+
+def run_ea(seed=None, parameters = {}):
+    random.seed(seed)
+    # inicialización del algoritmo genético: operadores, individuos y población inicial
+    toolbox = configure_nsga_iii(int(parameters["pop_size"]))  
+    # preparación de los datos a extraer/visualizar
+    stats = tools.Statistics(lambda ind: ind.fitness.values)
+    stats.register("avg", np.mean, axis=0)
+    stats.register("std", np.std, axis=0)
+    stats.register("min", np.min, axis=0)
+    stats.register("max", np.max, axis=0)
+    population = toolbox.population()  # Population size
+    hof = tools.HallOfFame(int(parameters["hof_size"]))
+    # configuración adicional del algoritmo genético
+    num_generations = int(parameters["num_generations"])   # convergencia por número de generaciones
+    mut_prob = parameters["mut_prob"] 
+    cx_prob = parameters["cx_prob"]  
+
+    # Agregar analisis de sensibilidad (?) - comentario original
+
+    # ejecución
+    population, logbook = algorithms.eaMuPlusLambda(population, toolbox, mu=int(parameters["mu"]), lambda_=int(parameters["lambda"]), cxpb=cx_prob,
+                                                    mutpb=mut_prob,
+                                                    ngen=num_generations, stats=stats, halloffame=hof, verbose=parameters["verbose"])
+    # fin de ejecución
+
+    pareto_front = tools.sortNondominated(population, len(population), first_front_only=True)[0]
+
+    # Suponé que cada individuo tiene 4 objetivos
+    front = np.array([ind.fitness.values for ind in pareto_front])
+
+    # Definí el punto de referencia (peor valor posible por objetivo)
+    ref_point = [MAXS[0]*1.1, (-MINS[1])*1.1, MAXS[2]*1.1, MAXS[3]*1.1]  # nota el signo para el invertido
+
+    hv = HV(ref_point=ref_point)
+    hv_value = hv(front)
+
+    print("Hypervolume:", hv_value)     # siempre 0.0
+    time.sleep(5)
+
+    #print("TYPES:",type(population),type(logbook),type(hof),type(pareto_front))
+    return population, logbook, hof, pareto_front
+
+
+if __name__ == "__main__":
+
+    mins_of_NED = []
+    maxs_of_NED = []
+    mins_of_SM = []
+    maxs_of_SM = []
+    mins_of_ICP = []
+    maxs_of_ICP = []
+    mins_of_IN = []
+    maxs_of_IN = []
+
+    seeds = [42,12,23,1,79,99,52,56,54,77,40,10,20,10,70,90,50,6,4,7]
+
+    # Ejecutar 20 corridas (comentario original)
+    for i,s in enumerate(seeds):
+        print("EJECUCION (",i,"/20).\nSEMILLA:",s)
+
+        pop, logbook, hof, pareto_front = run_ea(23,DEFAULT)
+
+        if DEFAULT["normalize_obj"]:
+            for ind in pop:
+                ind.fitness.values = denormalize(ind.fitness.values)
+
+        print("Densidad del frente de pareto: ",(len(pareto_front)/len(pop))*100,"%")
+        """
+                generations = logbook.select("gen")
+                avg = np.array(logbook.select("avg"))
+                min_ = np.array(logbook.select("min"))
+                max_ = np.array(logbook.select("max"))
+
+                mins_ = np.min(min_, axis=0)   # toma el mínimo a lo largo de todas las generaciones para cada columna
+                maxs_ = np.max(max_, axis=0)   # toma el máximo a lo largo de todas las generaciones para cada columna
+
+                mins_of_NED.append(mins_[0])
+                maxs_of_NED.append(maxs_[0])
+                mins_of_SM.append(mins_[0])
+                maxs_of_SM.append(maxs_[0])
+                mins_of_ICP.append(mins_[0])
+                maxs_of_ICP.append(maxs_[0])
+                mins_of_IN.append(mins_[0])
+                maxs_of_IN.append(maxs_[0])
+
+                print("Mínimos globales por objetivo:", mins_)
+                print("Máximos globales por objetivo:", maxs_)
+            
+            mins = [min(mins_of_NED),min(mins_of_SM),min(mins_of_ICP),min(mins_of_IN)]
+            maxs = [min(maxs_of_NED),min(maxs_of_SM),min(maxs_of_ICP),min(maxs_of_IN)]
+
+            print("OUTPUT")
+            print(mins)
+            print(maxs)
+
+        """
+        # Una vez finalizada la ejecución:
+        pop_fit = np.array([ind.fitness.values for ind in pop])
+        pareto_solutions = [ind.fitness.values for ind in pareto_front]
+        objectives = list(zip(*pareto_solutions))  # Now objectives[0] = all SM, [1] = IN, etc.
+        medians = [np.mean(obj) for obj in objectives]
+        print(medians)
+        best_decomposition = tools.selBest(pop, k=1)[0]
+        bd_partitions = individual_to_microservices(best_decomposition)
+
+        print("BEST FROM PARETO FRONT")
+        print(best_decomposition.fitness)
+        print(len(bd_partitions))
+        print(bd_partitions)
+
+        print("BEST FROM HOF")
+        best_decomposition = hof[0]
+        bd_partitions = individual_to_microservices(best_decomposition)
+        print(best_decomposition.fitness)
+        print(len(bd_partitions))
+        print(bd_partitions)
+
+        generations = logbook.select("gen")
+        avg = np.array(logbook.select("avg"))
+        min_ = np.array(logbook.select("min"))
+        max_ = np.array(logbook.select("max"))
+
+        # gráficos con respecto a nuestro método aisladamente
+        plot_evolution(generations, avg, min_, max_)
+        #plot_pareto_front(pareto_front)
+        #pareto_front_3d(pareto_front)
+        # comparación con otros métodos
+        methods = ['M2M', 'FoSCI', 'CoGCN', 'Bunch', 'MEM']
+        objectives = list(OBJECTIVES.values())
+        scores = [
+            [0.257, 0.054, 0.333, 1.857],   # M2M
+            [0.516, 0.044, 0.478, 3.75],    # FoSCI
+            [0.392, 0.091, 0.582, 2.533],   # CoGCN
+            [0.667, np.nan, 0.477, 7.948],  # Bunch
+            [1.0, 0.124, 0.434, 3.429]     # MEM
+        ]
+        methods.append("Our approach")
+        scores.append(medians)
+        #plot_radar_chart(methods, scores, objectives)
+        plot_parallel_coordinates(methods, scores, objectives)
+        cp = dict(population=pop, pareto_front=pareto_front, halloffame=hof,
+                logbook=logbook, rndstate=random.getstate())
+
+        with open("experiment_database.pkl", "wb") as cp_file:
+            pickle.dump(cp, cp_file)

@@ -1,0 +1,7 @@
+numpy
+pymop
+deap
+scipy
+matplotlib
+seaborn
+networkx
