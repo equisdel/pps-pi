@@ -7,8 +7,6 @@ import networkx as nx
 from pymoo.indicators.hv import HV
 import numpy as np
 
-
-
 from plots import plot_evolution, pareto_front_3d, plot_pareto_front, plot_radar_chart, plot_parallel_coordinates
 
 matplotlib.use('TkAgg')
@@ -16,28 +14,31 @@ import numpy as np
 from collections import defaultdict
 from deap import base, creator, tools, algorithms
 
-from metrics import sm, ifn, ned, icp
+from metrics import sm, ifn, ned, icp, hv
 
 GRAPH_FILENAME = "monoliths/jpetstore/graph.pkl"
 METADATA = "monoliths/jpetstore/metadata.json"
 
+POP_SIZE = 200
+
 DEFAULT = {
-    "pop_size": 200,
-    "num_generations": 200,
+    "pop_size": POP_SIZE,
+    "num_generations": 100,
     "hof_size": 10,
-    "mu": 100,
-    "lambda": 200,
-    "mut_prob": 0.1,
-    "cx_prob": 0.9,
-    "normalize_obj": False,
-    "verbose": False
+    "mu": POP_SIZE,             # mu siempre es pop_size
+    "lambda": POP_SIZE*1.5,     # lambda es una proporción de pop_size, acá va la proporción solamente
+    "mut_prob": 0.1,            # mut_prob y c_x prob se relacionan en cuanto a que tienen que sumar 1 o menos.
+    "cx_prob": 0.9,             # si hacemos que sume 1, solo debe setearse una. tenemos dos variables a cambiar.
+    "normalize_obj": False,     # este hay que arreglarlo
+    "proportional_NED": True,   # este anda bárbaro, podría variarse?
+    "verbose": False,           # este se va
 }
 
 with open(GRAPH_FILENAME, 'rb') as file:
     graph = pickle.load(file)
-    plt.figure(figsize=(10, 8))
-    pos = nx.spring_layout(graph, seed=42)  # layout más legible para grafos pequeños
-    nx.draw(graph, pos, with_labels=True, node_size=500, node_color="skyblue", font_size=8)
+    #plt.figure(figsize=(10, 8))
+    #pos = nx.spring_layout(graph, seed=42)  # layout más legible para grafos pequeños
+    #nx.draw(graph, pos, with_labels=True, node_size=500, node_color="skyblue", font_size=8)
     #plt.show()
 
     #print(type(graph))
@@ -46,14 +47,17 @@ with open(GRAPH_FILENAME, 'rb') as file:
     graph.remove_nodes_from(nodes_to_remove)
 
 N_OBJECTIVES = 4                # NED, SM, ICP, IN
-MINS = [0.0,0.0,0.0,0.4]#[ 0.0, 0.0, 0.3, 0.6]    # Para normalización
-MAXS = [1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
+
+# estos valores se extraen de lo que sea que devuelva montecarlo
+MINS = [0.0,0.0,0.0,0.4] #[0.0,0.0,0.0,0.4] - [ 0.0, 0.0, 0.3, 0.6]    # Para normalización
+MAXS = [1.0,0.5838,0.7826087,2.5]   #[1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
 
 N_CLASSES = len(graph.nodes)    # 24
 CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)} # mapeo de clases con ids de 0 a N-1
 #print("mapeo de clases:")
 #print(CLASS_MAPPING)
 time.sleep(10)
+
 MAX_MICROSERVICES = N_CLASSES   # máxima cantidad de bins: 24 (caso extremo, una clase por microservicio)
 P = 12  # c'est quoi?
 OBJECTIVES = {      # mapeo de objetivos con identificadores
@@ -94,16 +98,18 @@ def denormalize(fitness):
 
 def evaluate(individual):
 
-    partitions = individual_to_microservices(individual)
-    sm_value = sm(partitions, graph)
-    in_value = ifn(partitions, graph)
-    ned_value = ned(partitions)
+    partitions = individual_to_microservices(individual)    # pasa de lista a diccionario
+
+    sm_value  = sm(partitions, graph)
+    in_value  = ifn(partitions, graph)
+    ned_value = ned(partitions, N_CLASSES if DEFAULT["proportional_NED"] else None)
     icp_value = icp(partitions, graph)
     
     if not validate_mapper_constraint(individual):
-        return 10000, 10000, -10000, 10000      # Eliminar el individuo directamente (comentario original)
+        return tuple([10000,-10000,10000,10000])     # Eliminar el individuo directamente (comentario original)
 
     values = [ned_value, sm_value, icp_value, in_value]
+
     if DEFAULT["normalize_obj"]:
         values = normalize(values)
 
@@ -122,18 +128,51 @@ def individual_to_microservices(individual):
 
 def configure_nsga_iii(pop_size=100):
     # Maximized SM, minimized IN, minimized NED, minimized ICP
-    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, 1.0, -1.0, -1.0))
+    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, +1.0, -1.0, -1.0))
     creator.create("Individual", list, fitness=creator.FitnessMulti)
     toolbox = base.Toolbox()
     toolbox.register("attr_int", random.randint, 0, MAX_MICROSERVICES - 1)
     toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, n=N_CLASSES)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)   # tamaño de la población: 100
-    toolbox.register("mate", tools.cxTwoPoint)
-    toolbox.register("mutate", mutate_class_assignment)
+    toolbox.register("mate", tools.cxTwoPoint)           # cruzamiento!
+    toolbox.register("mutate", mutate_class_assignment)  # mutación!
     ref_points = tools.uniform_reference_points(nobj=N_OBJECTIVES, p=P)
     toolbox.register("select", tools.selNSGA3, ref_points=ref_points) #corregir en el paper
     toolbox.register("evaluate", evaluate)
     return toolbox
+
+def normalize_fitness(obj_id, obj_value):
+    n_obj_value = obj_value-MINS[obj_id]/MAXS[obj_id]-MINS[obj_id]
+    #print("obj_id,min,max,value,normalized_value:  ",obj_id,MINS[obj_id],MAXS[obj_id],obj_value,n_obj_value)
+    return (obj_value-MINS[obj_id])/(MAXS[obj_id]-MINS[obj_id])
+
+def normalized(fitness):
+    return [normalize_fitness(i,f) for i,f in enumerate(fitness)]
+
+def calculate_hv(pareto_front):
+    
+    normalized_front = np.array([normalized(ind.fitness.values) for ind in pareto_front])
+
+    weights = (-1.0, +1.0, -1.0, -1.0)
+    front_min = normalized_front.copy()
+
+    for i, w in enumerate(weights):
+        if w > 0:            # SM es un objetivo originalmente maximizado
+            front_min[:, i] = -front_min[:, i]
+
+    ref_point = np.max(front_min, axis=0) * 1.1  
+
+    hv = HV(ref_point=ref_point)
+    if DEFAULT["verbose"]:
+        print("front (original):\n", normalized_front)
+        print("front_min (to minimiza):\n", front_min)
+        print("ref_point:", ref_point)
+        print("any(front_min > ref_point):", np.any(front_min > ref_point))
+
+    hv_value = hv(front_min)
+    #print("Hypervolume:", hv_value)
+
+    return hv_value
 
 
 def run_ea(seed=None, parameters = {}):
@@ -159,25 +198,33 @@ def run_ea(seed=None, parameters = {}):
     population, logbook = algorithms.eaMuPlusLambda(population, toolbox, mu=int(parameters["mu"]), lambda_=int(parameters["lambda"]), cxpb=cx_prob,
                                                     mutpb=mut_prob,
                                                     ngen=num_generations, stats=stats, halloffame=hof, verbose=parameters["verbose"])
-    # fin de ejecución
 
     pareto_front = tools.sortNondominated(population, len(population), first_front_only=True)[0]
 
-    # Suponé que cada individuo tiene 4 objetivos
-    front = np.array([ind.fitness.values for ind in pareto_front])
-
-    # Definí el punto de referencia (peor valor posible por objetivo)
-    ref_point = [MAXS[0]*1.1, (-MINS[1])*1.1, MAXS[2]*1.1, MAXS[3]*1.1]  # nota el signo para el invertido
-
-    hv = HV(ref_point=ref_point)
-    hv_value = hv(front)
-
-    print("Hypervolume:", hv_value)     # siempre 0.0
-    time.sleep(5)
+    hv = calculate_hv(pareto_front)
 
     #print("TYPES:",type(population),type(logbook),type(hof),type(pareto_front))
-    return population, logbook, hof, pareto_front
+    return population, logbook, hof, pareto_front, hv
 
+
+if __name__ == "_main__":
+    
+    ind1 = [9, 2, 0, 18, 9, 13, 12, 16, 11, 4, 23, 6, 8, 14, 0, 7, 19, 14, 0, 3, 2, 22, 15, 13]
+    ind2 = [22, 8, 0, 10, 12, 0, 4, 23, 12, 6, 21, 0, 5, 20, 14, 23, 13, 2, 13, 22, 8, 15, 19, 22]
+
+    print()
+    print("IND1")
+    print("ned: ",ned(individual_to_microservices(ind1),N_CLASSES))
+    print("sm:  ",sm(individual_to_microservices(ind1),graph))
+    print("ifn: ",ifn(individual_to_microservices(ind1),graph))
+    print("icp: ",icp(individual_to_microservices(ind1),graph))
+    print()
+    print("IND2")
+    print("ned: ",ned(individual_to_microservices(ind2),N_CLASSES))
+    print("sm:  ",sm(individual_to_microservices(ind2),graph))
+    print("ifn: ",ifn(individual_to_microservices(ind2),graph))
+    print("icp: ",icp(individual_to_microservices(ind2),graph))
+    print()
 
 if __name__ == "__main__":
 
@@ -191,7 +238,7 @@ if __name__ == "__main__":
     maxs_of_IN = []
 
     seeds = [42,12,23,1,79,99,52,56,54,77,40,10,20,10,70,90,50,6,4,7]
-
+    seeds = [42]
     # Ejecutar 20 corridas (comentario original)
     for i,s in enumerate(seeds):
         print("EJECUCION (",i,"/20).\nSEMILLA:",s)

@@ -30,6 +30,8 @@ def plot_evolution(generations, avg, min_, max_):
     plt.tight_layout()
     plt.show()
 
+def scatterplot_inpaired(population):
+    print()
 
 def plot_pareto_front(pareto_front):
     pareto_array = np.array([ind.fitness.values for ind in pareto_front])

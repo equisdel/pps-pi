@@ -1,12 +1,17 @@
 from collections import defaultdict
 
-
-def ned(partitions):
+def ned(partitions,n_classes=None):
     k = len(partitions)
     if k == 0:
         return 1  # Max penalty if no microservices
+    # entre el 5 y el 40 por ciento de las clases (salvo instancias grandes)
+    lower_limit = min(int((n_classes/100)*5)+1, 5) if n_classes else 5   # 1
+    upper_limit = min(int((n_classes/100)*40), 20) if n_classes else 20  # 9
 
-    non_extreme_count = sum(1 for cluster in partitions.values() if 5 < len(cluster) < 20)
+    #print(lower_limit)
+    #print(upper_limit)
+
+    non_extreme_count = sum(1 for cluster in partitions.values() if lower_limit < len(cluster) < upper_limit)
     ned_value = 1 - (non_extreme_count / k)
     return round(ned_value, 3)
 
@@ -102,3 +107,13 @@ def icp(partitions, graph):
 
     icp_value = inter_service_calls / total_dependencies
     return icp_value
+
+def hv():
+    return hv
+
+
+if __name__=="__main__":
+
+    ind = [9, 2, 0, 18, 9, 13, 12, 16, 11, 4, 23, 6, 8, 14, 0, 7, 19, 14, 0, 3, 2, 22, 15, 13]
+    print()
+    print(ned(ind))
