@@ -158,10 +158,11 @@ def plot_robustness(values,metric):
 
 # EJECUCION DE LAS N PRUEBAS
 
-def run_uncertainty(N=10):
+def run_uncertainty(N=10,params=DEFAULT):
 
     # El objetivo es medir la incertidumbre con distintas semillas, pero sin variar los parámetros
     seeds = [x for x in range(N)]
+
     all_pareto_fronts = []
 
     hv_values = []
@@ -169,7 +170,7 @@ def run_uncertainty(N=10):
     spread_values = []
 
     for seed in seeds:
-        output, logbook, hof, pareto_front, hv = run_ea(seed, DEFAULT)
+        output, logbook, hof, pareto_front, hv = run_ea(seed, params)
         all_pareto_fronts.append(pareto_front)
         hv_values.append(hv)
 
@@ -180,8 +181,7 @@ def run_uncertainty(N=10):
         igd_plus_values.append(igd_plus(pf,ideal_front))
         spread_values.append(spread(pf, ideal_front))
 
-
-    return hv_values, igd_plus_values, spread_values
+    return hv_values, igd_plus_values, spread_values, all_pareto_fronts, ideal_front
 
 
 
@@ -192,7 +192,7 @@ if __name__=="__main__":
 
     # prueba de incertidumbre
     print("\nEjecutando análisis de robustez con", N, "corridas...\n")
-    uncertainty_hv_values, uncertainty_igd_plus_values, _ = run_uncertainty(N)
+    uncertainty_hv_values, uncertainty_igd_plus_values, _, _, _ = run_uncertainty(N)
 
     print(uncertainty_igd_plus_values)
 
@@ -202,8 +202,6 @@ if __name__=="__main__":
 
     print(igd_plus_stats)
 
-    
-    
     # imprimir y graficar robustez de HV
     print_robustness(hv_stats,"hypervolume")   # esto tiene que ser un análisis de robustez integral
     print_robustness(igd_plus_stats,"IGD+") 
@@ -213,6 +211,9 @@ if __name__=="__main__":
     #plot_robustness(uncertainty_hv_values,"hypervolume")
 
     # prueba de sensibilidad
+
+
+
 
     # variable_parameters: parámetros a variar junto con su distribución
     variable_parameters = {
