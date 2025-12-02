@@ -23,6 +23,8 @@ import matplotlib.pyplot as plt
 
 
 # METRICA IGD+
+IDEAL_PF = []
+
 
 def union_pareto_fronts(pareto_fronts_list):
     # une todos los frentes de Pareto obtenidos en uno solo (se queda con puntos no dominados)
@@ -39,7 +41,7 @@ def union_pareto_fronts(pareto_fronts_list):
     print(f"La cantidad de individuos en la union de frentes de pareto es: {len(nondominated)}")
     return nondominated
 
-def igd_plus(obtained_pf, ideal_pf):
+def igd_plus(obtained_pf, ideal_pf=IDEAL_PF):
     # calcula IGD+ para una muestra en particular
     
     # extrae los fitness values

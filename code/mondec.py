@@ -67,7 +67,7 @@ OBJECTIVES = {      # mapeo de objetivos con identificadores
     3: 'IN',
 }
 
-
+# parametrizar "mapper", porque en cargo es "repository". esta ligado a la instancia.
 def validate_mapper_constraint(individual):
     microservice_to_tables = defaultdict(set)
     mapper_classes = {i for i, cls in CLASS_MAPPING.items() if "mapper" in cls.lower() and not "test" in cls.lower()}
