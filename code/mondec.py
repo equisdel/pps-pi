@@ -100,10 +100,10 @@ def evaluate(individual):
 
     partitions = individual_to_microservices(individual)    # pasa de lista a diccionario
 
-    sm_value  = sm(partitions, graph)
-    in_value  = ifn(partitions, graph)
     ned_value = ned(partitions, N_CLASSES if DEFAULT["proportional_NED"] else None)
+    sm_value  = sm(partitions, graph)
     icp_value = icp(partitions, graph)
+    in_value  = ifn(partitions, graph)
     
     if not validate_mapper_constraint(individual):
         return tuple([10000,-10000,10000,10000])     # Eliminar el individuo directamente (comentario original)
