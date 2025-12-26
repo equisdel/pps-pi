@@ -8,9 +8,6 @@ def ned(partitions,n_classes=None):
     lower_limit = min(int((n_classes/100)*5)+1, 5) if n_classes else 5   # 1
     upper_limit = min(int((n_classes/100)*40), 20) if n_classes else 20  # 9
 
-    #print(lower_limit)
-    #print(upper_limit)
-
     non_extreme_count = sum(1 for cluster in partitions.values() if lower_limit < len(cluster) < upper_limit)
     ned_value = 1 - (non_extreme_count / k)
     return round(ned_value, 3)

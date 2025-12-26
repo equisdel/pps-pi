@@ -213,10 +213,6 @@ if __name__=="__main__":
     #plot_robustness(uncertainty_hv_values,"hypervolume")
 
     # prueba de sensibilidad
-
-
-
-
     # variable_parameters: parámetros a variar junto con su distribución
     variable_parameters = {
         "mu":               {"mean": 100,   "std": 0},

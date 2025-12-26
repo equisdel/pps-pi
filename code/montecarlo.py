@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
-from mondec import evaluate, MAX_MICROSERVICES, N_CLASSES, OBJECTIVES
+from mondec import evaluate, new_evaluate, MAX_MICROSERVICES, N_CLASSES, OBJECTIVES, init_partition
 
 M = 1000    # muestras de Monte Carlo
 SEED = 42
@@ -61,22 +61,22 @@ def plot_obj_distribution(objs):
     plt.savefig('obj_distribution.png', bbox_inches='tight', dpi=150)
     plt.show()
 
-def random_individual():
-    r_ind = np.random.randint(0, MAX_MICROSERVICES, size=N_CLASSES)
-    return r_ind
+def random_individual(n=N_CLASSES):
+    return init_partition(n)
 
 def main():
     np.random.default_rng(SEED)
 
     # genera N individuos (posibles soluciones) al azar
-    individuals = [random_individual() for _ in range(M)]
+    # individuals = [random_individual() for _ in range(M)]
+    individuals = [random_individual() for _ in range (M)]
     objs = []       # recolecta los valores de sus objetivos, o sea, 
                     # f(x1,x2,...,xn) = o1, o2, o3, o4
                     # para cada una de las M muestras
     t0 = time.time()
     print()
     for i, ind in enumerate(individuals):
-        ind_eval = evaluate(ind)
+        ind_eval = new_evaluate(ind)
         print(i,":",ind_eval)
         objs.append(ind_eval)
     print("M:",M)

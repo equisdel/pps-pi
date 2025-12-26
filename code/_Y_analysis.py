@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from scipy.ndimage import uniform_filter1d
 from SALib.analyze import sobol
-from sensitivity import PROBLEM
+from code.analysis._sensitivity import PROBLEM
 
 # lectura y escritura de datos en formato .csv
 ORIG_OUTPUT_PATH = "Y_results.csv"

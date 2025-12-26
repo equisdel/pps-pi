@@ -9,5 +9,5 @@ def measure_correlation(population_fits):
 
 if __name__=="__main__":
 
-    pop, _, _, _ = run_ea(23,DEFAULT)
+    pop, _, _, _, _ = run_ea(23,DEFAULT)
     measure_correlation(np.array([ind.fitness.values for ind in pop]))
