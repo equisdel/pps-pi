@@ -118,6 +118,33 @@ for canon, _ in canon_map.items():
 
 C /= S
 
+OUTPUT = "pareto_canonico_con_fitness.txt"
+
+with open(OUTPUT, "w") as f:
+    header = (
+        f"{'ID':>3} | {'#MS':>3} | {'CNT':>4} | "
+        f"{'NED':>6} | {'SM':>7} | {'ICP':>7} | {'IFN':>7} | "
+        f"PARTITION\n"
+    )
+    f.write(header)
+    f.write("-" * (len(header) + 20) + "\n")
+
+    for i, (canon, data) in enumerate(canon_map.items()):
+        canon_sorted = sorted([sorted(b) for b in canon])
+        ned_v, sm_v, icp_v, ifn_v = data["fitness"]
+
+        f.write(
+            f"{i:3d} | "
+            f"{data['size']:3d} | "
+            f"{data['counter']:4d} | "
+            f"{ned_v:6.3f} | "
+            f"{sm_v:7.4f} | "
+            f"{icp_v:7.4f} | "
+            f"{ifn_v:7.4f} | "
+            f"{canon_sorted}\n"
+        )
+
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 

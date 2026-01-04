@@ -106,12 +106,3 @@ def icp(partitions, graph):
     icp_value = inter_service_calls / total_dependencies
     return icp_value
 
-def hv():
-    return hv
-
-
-if __name__=="__main__":
-
-    ind = [9, 2, 0, 18, 9, 13, 12, 16, 11, 4, 23, 6, 8, 14, 0, 7, 19, 14, 0, 3, 2, 22, 15, 13]
-    print()
-    print(ned(ind))

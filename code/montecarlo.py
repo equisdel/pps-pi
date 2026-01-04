@@ -13,103 +13,95 @@ Por el momento, se deshabilitan esas opciones analíticas para priorizar funcion
 
 import numpy as np
 import time
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-from scipy import stats
-from mondec import evaluate, new_evaluate, MAX_MICROSERVICES, N_CLASSES, OBJECTIVES, init_partition
+import sys
+from mondec import evaluate, new_evaluate, init_partition, N_CLASSES, DEFAULT, INSTANCE, METADATA, N_OBJECTIVES
 
 M = 1000000     # muestras de Monte Carlo
 SEED = 42
 
-def plot_obj_distribution(objs):
-    """
-    Grafica la distribución (boxplot + estadísticas) de cada objetivo.
-    objs: array de shape (M, 4) con M muestras y 4 objetivos
-    """
-    fig, axs = plt.subplots(1, 4, figsize=(16, 4))
-    
-    for i in range(4):
-        obj_values = objs[:, i]
-        
-        # Boxplot
-        axs[i].boxplot(obj_values, vert=False, widths=0.5)
-        
-        # Estadísticas
-        mean_val = np.mean(obj_values)
-        min_val = np.min(obj_values)
-        max_val = np.max(obj_values)
-        std_val = np.std(obj_values)
-        
-        # Mostrar estadísticas como texto en la gráfica
-        stats_text = f"μ={mean_val:.4f}\nσ={std_val:.4f}\nMin={min_val:.4f}\nMax={max_val:.4f}"
-        axs[i].text(0.98, 0.97, stats_text, transform=axs[i].transAxes, 
-                   verticalalignment='top', horizontalalignment='right',
-                   bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5),
-                   fontsize=9, family='monospace')
-        
-        axs[i].set_xlabel('Value')
-        axs[i].set_title(f'Objective {OBJECTIVES[i]} (n={len(obj_values)})')
-        axs[i].grid(True, alpha=0.3)
-    
-    fig.suptitle('Distribution of Objectives (Monte Carlo Analysis)', fontsize=14, fontweight='bold')
-    plt.tight_layout()
-    plt.savefig('obj_distribution.png', bbox_inches='tight', dpi=150)
-    plt.show()
+def progress_bar(i, total, width=30):
+    progress = (i + 1) / total
+    filled = int(width * progress)
+    bar = "█" * filled + "-" * (width - filled)
+    percent = int(progress * 100)
+    sys.stdout.write(f"\r|{bar}| {percent}% ({i+1}/{total})")
+    sys.stdout.flush()
 
 def random_individual(n=N_CLASSES):
-    return init_partition(n)
+    if DEFAULT["new_representation"]:
+        return init_partition(n)
+    else:
+        return np.random.randint(0, n, size=n).tolist()
 
-def main():
+def run(m:int=M):
+  
     np.random.default_rng(SEED)
 
-    # genera N individuos (posibles soluciones) al azar
-    # individuals = [random_individual() for _ in range(M)]
-    individuals = [random_individual() for _ in range (M)]
+    individuals = [random_individual() for _ in range(m)]
     objs = []       # recolecta los valores de sus objetivos, o sea, 
                     # f(x1,x2,...,xn) = o1, o2, o3, o4
                     # para cada una de las M muestras
-    t0 = time.time()
-    print()
-    for i, ind in enumerate(individuals):
-        ind_eval = new_evaluate(ind)
-        print(i,":",ind_eval)
-        objs.append(ind_eval)
-    print("M:",M)
-    print("Evaluado en", time.time() - t0,"segundos.")
     
-    # M filas: las muestras; 
-    # P columnas: los 4 objetivos;
+    t0 = time.time()
+    for i, ind in enumerate(individuals):
+        ind_eval = new_evaluate(ind) if DEFAULT["new_representation"] else evaluate(ind)
+        objs.append(ind_eval)
+        if (m>100000):
+            if i % 1000 == 999:
+                progress_bar(i, m)
+        else:
+            progress_bar(i, m)
+    tf = time.time()
+
+    # M filas:      las muestras a tomar; 
+    # P columnas:   los 4 objetivos;
     objs = np.array(objs) 
 
     # calculo de las distribuciones de cada objetivo
     objs_T = objs.T
-    avg = np.mean(objs_T, axis=1)
     min_ = np.min(objs_T, axis=1)
     max_ = np.max(objs_T, axis=1)
-    print("min: ",min_)
-    print("avg: ",avg)
-    print("max: ",max_)
-    plot_obj_distribution(objs) # se las grafica en un box plot
 
-    # calculo de correlacion entre objetivos
-    # matriz de correlación Pearson
-    corr = np.corrcoef(objs, rowvar=False)
-    print("Pearson:\n", corr)
-    # matriz de correlación Spearman
-    spear = np.zeros((4,4))
-    for i in range(4):
-        for j in range(4):
-            spear[i,j] = stats.spearmanr(objs[:,i], objs[:,j]).correlation
-    print("Spearman:\n", spear)
+    print()
 
-    # PCA: Principal Components Analysis
-    scaler = StandardScaler()       
-    X = scaler.fit_transform(objs)  # 1. escala los objetivos
-    pca = PCA(whiten=True)          # 2. centraliza por defecto
-    pca.fit(X)                      # 3. calcula PCA
-    print("PCA explained:", pca.components_)
-    print("PCA explained:", pca.explained_variance_ratio_)
+    return min_, max_, tf-t0
 
 if __name__ == "__main__":
-    main()
+
+    import json 
+
+    with open(METADATA,"r") as f:
+        metadata = json.load(f) 
+
+    order = ["NED", "SM", "ICP", "IN"]
+
+    # known limits
+    old_min = [metadata["RANGE"]["MIN"][k] for k in order]
+    old_max = [metadata["RANGE"]["MAX"][k] for k in order]
+
+    #print(metadata)
+    
+
+    print(old_min)
+
+    m = 10000000
+
+    print("\nInstancia: ",INSTANCE," (N: ",N_CLASSES," clases)")
+    print("Montecarlo corre con M:  ",m," muestras\n")
+
+    new_min, new_max, t = run(m)
+
+    update_needed = False
+
+    for i in range(N_OBJECTIVES):
+        if new_min[i]<old_min[i]:
+            old_min[i]=new_min[i]
+            update_needed = True
+        if new_max[i]>old_max[i]:
+            old_max[i]=new_max[i]
+            update_needed = True
+
+    if update_needed:
+        print("update needed")
+
+    print("Evaluado en",t,"segundo\n")

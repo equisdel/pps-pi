@@ -22,8 +22,10 @@ from plots import (
 # CONFIG
 
 DEMO = True
-GRAPH_FILENAME = "monoliths/cargo/graph.pkl"
-METADATA = "monoliths/cargo/metadata.json"
+INSTANCE = "cargo"
+
+GRAPH_FILENAME = f"monoliths/{INSTANCE}/graph.pkl"
+METADATA = f"monoliths/{INSTANCE}/metadata.json"
 
 POP_SIZE = 200
 DEFAULT = {     # configuración por defecto
@@ -48,7 +50,7 @@ MINS = [0.0,    0.0,    0.0,    0.0] #[0.0,0.0,0.0,0.4] - [ 0.0, 0.0, 0.3, 0.6] 
 MAXS = [1.0,    0.5838, 0.7827, 2.5]   #[1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
 
 N_CLASSES = len(graph.nodes) 
-MAX_MICROSERVICES = N_CLASSES   # máxima cantidad de bins: 24 (caso extremo, una clase por microservicio)
+MAX_MICROSERVICES = N_CLASSES   # máxima cantidad de bins - caso extremo, una clase por microservicio
 CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)}
 
 P = 12      # que es?
