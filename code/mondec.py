@@ -1,34 +1,38 @@
+# Librerias Estandar
 import pickle
 import random
 import time
-import matplotlib
-import matplotlib.pyplot as plt
-import networkx as nx
-from pymoo.indicators.hv import HV
-import numpy as np
-
-from plots import plot_evolution, pareto_front_3d, plot_pareto_front, plot_radar_chart, plot_parallel_coordinates
-
-matplotlib.use('TkAgg')
-import numpy as np
 from collections import defaultdict
+# Librerias Externas
+import matplotlib
+matplotlib.use("TkAgg")
+import numpy as np
+from pymoo.indicators.hv import HV
 from deap import base, creator, tools, algorithms
-
+# Modulos Locales
 from metrics import sm, ifn, ned, icp, hv
+from plots import (
+    plot_evolution,
+    pareto_front_3d,
+    plot_pareto_front,
+    plot_radar_chart,
+    plot_parallel_coordinates,
+)
+
+# CONFIG
 
 DEMO = True
 GRAPH_FILENAME = "monoliths/cargo/graph.pkl"
 METADATA = "monoliths/cargo/metadata.json"
 
 POP_SIZE = 200
-
-DEFAULT = {
+DEFAULT = {     # configuración por defecto
     "pop_size": POP_SIZE,
     "num_generations": 100,
     "hof_size": 10,
-    "mu": POP_SIZE,             # mu siempre es pop_size
-    "lambda": POP_SIZE*1.5,     # lambda es una proporción de pop_size, acá va la proporción solamente
-    "mut_prob": 0.9,            # mut_prob y c_x prob son complementarios (suman 1.0)
+    "mu": POP_SIZE,             # mu es el tamaño de la población
+    "lambda": POP_SIZE*1.5,     # lambda es proporcional al tamaño de la población
+    "mut_prob": 0.9,            # mut_prob es complemento de cx_prob (suman 1.0)
     "cx_prob": 0.1,
     "proportional_NED": True,   # modificación #1 
     "new_representation": True, # modificación #2
@@ -39,26 +43,26 @@ with open(GRAPH_FILENAME, 'rb') as file:
     nodes_to_remove = [node for node in graph.nodes if 'test' in node.lower() or 'transition' in node.lower()]
     graph.remove_nodes_from(nodes_to_remove)
 
-N_OBJECTIVES = 4                # NED, SM, ICP, IN
+# future work: pre-calentamiento con Montecarlo
+MINS = [0.0,    0.0,    0.0,    0.0] #[0.0,0.0,0.0,0.4] - [ 0.0, 0.0, 0.3, 0.6]    # Para normalización
+MAXS = [1.0,    0.5838, 0.7827, 2.5]   #[1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
 
-# pre-calentamiento con Montecarlo
-MINS = [0.0,0.0,0.0,0.0] #[0.0,0.0,0.0,0.4] - [ 0.0, 0.0, 0.3, 0.6]    # Para normalización
-MAXS = [1.0,0.5838,0.7826087,2.5]   #[1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
-
-N_CLASSES = len(graph.nodes)    # 24
-CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)} # mapeo de clases con ids de 0 a N-1
-#print("mapeo de clases:")
-#print(CLASS_MAPPING)
-time.sleep(10)
-
+N_CLASSES = len(graph.nodes) 
 MAX_MICROSERVICES = N_CLASSES   # máxima cantidad de bins: 24 (caso extremo, una clase por microservicio)
-P = 12  
-OBJECTIVES = {      # mapeo de objetivos con identificadores
+CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)}
+
+P = 12      # que es?
+N_OBJECTIVES = 4              
+OBJECTIVES = {
     0: 'NED',
     1: 'SM',
     2: 'ICP',
     3: 'IN',
 }
+
+time.sleep(10)
+
+# _______________
 
 # parametrizar "mapper", porque en cargo es "repository". esta ligado a la instancia.
 def validate_mapper_constraint(individual):
@@ -75,7 +79,6 @@ def validate_mapper_constraint(individual):
         if len(microservices) > 1:
             return False
     return True
-
 
 def mutate_class_assignment(individual):
     idx = random.randint(0, N_CLASSES - 1)
@@ -259,17 +262,8 @@ def calculate_hv(pareto_front):
             front_min[:, i] = -front_min[:, i]
 
     ref_point = np.max(front_min, axis=0) * 1.1  
-
     hv = HV(ref_point=ref_point)
-    """
-        print("front (original):\n", normalized_front)
-        print("front_min (to minimiza):\n", front_min)
-        print("ref_point:", ref_point)
-        print("any(front_min > ref_point):", np.any(front_min > ref_point))
-    """
-
     hv_value = hv(front_min)
-    #print("Hypervolume:", hv_value)
 
     return hv_value
 
@@ -287,11 +281,9 @@ def run_ea(seed=None, parameters = {}):
     population = toolbox.population()  # Population size
     hof = tools.HallOfFame(int(parameters["hof_size"]))
     # configuración adicional del algoritmo genético
-    num_generations = int(parameters["num_generations"])   # convergencia por número de generaciones
+    num_generations = int(parameters["num_generations"])
     mut_prob = parameters["mut_prob"] 
     cx_prob = parameters["cx_prob"]  
-
-    # Agregar analisis de sensibilidad (?) - comentario original
 
     # ejecución
     population, logbook = algorithms.eaMuPlusLambda(population, toolbox, mu=int(parameters["mu"]), lambda_=int(parameters["lambda"]), cxpb=cx_prob,
@@ -302,24 +294,22 @@ def run_ea(seed=None, parameters = {}):
 
     hv = calculate_hv(pareto_front)
 
-    #print("TYPES:",type(population),type(logbook),type(hof),type(pareto_front))
     return population, logbook, hof, pareto_front, hv
-
-
 
 
 
 if __name__ == "__main__":
 
-    seeds = [42,12,23,1,79,99,52,56,54,77,40,10,20,10,70,90,50,6,4,7]
+    #seeds = [42,12,23,1,79,99,52,56,54,77,40,10,20,10,70,90,50,6,4,7]
     seeds = [42]
     # Ejecutar 20 corridas (comentario original)
+    
     for i,s in enumerate(seeds):
         print("EJECUCION (",i,"/20).\nSEMILLA:",s)
 
         pop, logbook, hof, pareto_front, hv_ = run_ea(23,DEFAULT)
 
-        print("Densidad del frente de pareto: ",(len(pareto_front)/len(pop))*100,"%")
+        #print("Densidad del frente de pareto: ",(len(pareto_front)/len(pop))*100,"%")
     
         # Una vez finalizada la ejecución:
         pop_fit = np.array([ind.fitness.values for ind in pop])

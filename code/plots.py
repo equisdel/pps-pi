@@ -26,7 +26,7 @@ def plot_evolution(generations, avg, min_, max_):
         axs[i].grid(True)
 
     fig.suptitle('Objective Evolution Over Generations')
-    plt.savefig('evolution.png', bbox_inches='tight')
+    #plt.savefig('evolution.png', bbox_inches='tight')
     plt.tight_layout()
     plt.show()
 
@@ -46,7 +46,7 @@ def plot_pareto_front(pareto_front):
     plt.grid(True)
     plt.legend(["ParetoFront"], loc='upper right')
     plt.tight_layout()
-    plt.savefig('pareto_front.png', bbox_inches='tight')
+    #plt.savefig('pareto_front.png', bbox_inches='tight')
     plt.show()
 
 """
@@ -60,7 +60,7 @@ def plot_pareto_v2(pareto_front):
     sns.pairplot(df)
     plt.suptitle("Pareto Front (Pairwise Scatter Plots)", y=1.02)
     plt.tight_layout()
-    plt.savefig('pareto_front_pairwise.png', bbox_inches='tight')
+    #plt.savefig('pareto_front_pairwise.png', bbox_inches='tight')
     plt.show()
 """
 
@@ -89,7 +89,7 @@ def pareto_front_3d(pareto_front):
     plt.colorbar(sc, label=list(OBJECTIVES.values())[3])
 
     plt.tight_layout()
-    plt.savefig('pareto_front_3d_colored.png', bbox_inches='tight')
+    #plt.savefig('pareto_front_3d_colored.png', bbox_inches='tight')
     plt.show()
 
 
@@ -134,7 +134,7 @@ def plot_radar_chart(method_names, objective_matrix, objective_names):
     ax.set_title("Comparison of Decomposition Methods", y=1.08)
     ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
     plt.tight_layout()
-    plt.savefig('comparison.png', bbox_inches='tight')
+    #plt.savefig('comparison.png', bbox_inches='tight')
     plt.show()
 
 def plot_parallel_coordinates(method_names, objective_matrix, objective_names):
@@ -161,5 +161,5 @@ def plot_parallel_coordinates(method_names, objective_matrix, objective_names):
     plt.title("Parallel Coordinates Plot of Objective Scores")
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('parallel.png', bbox_inches='tight')
+    #plt.savefig('parallel.png', bbox_inches='tight')
     plt.show()

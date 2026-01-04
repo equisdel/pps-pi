@@ -1,17 +1,13 @@
 """
-Este código es un análisis del espacio de soluciones de la instancia a trabajar.
-Por defecto, esta instancia es JPetStore.
+Este código es un análisis MonteCarlo del espacio de soluciones de la instancia a trabajar.
+La idea es usarlo para precalentar el algoritmo con límites realistas para cada uno de los objetivos.
 
-Emplea MonteCarlo para generar N soluciones al azar, calcular sus fitness, y extraer:
-    ** Rangos de valores para cada fitness (media y varianza, máximo y mínimo).
-    ** Matriz Pearson de correlación entre los objetivos.
-    ** Matriz Spearman de correlación.
-    ** PCA
+Explora el espacio al azar y registra mínimos y máximos. También pueden sacarse otros datos:
+- Correlación entre objetivos (Pearson y Spearman)
+- PCA
+- Distribución de los objetivos (media, desviación, etc.)
 
-Del análisis de estos datos se pueden extraer:
-- Niveles de independencia de los objetivos con respecto al problema
-- Precalentamiento del rango de valores entre los que se mueve cada uno de los objetivos
-- P individuos con mejores fitness para inicializar la población
+Por el momento, se deshabilitan esas opciones analíticas para priorizar funcionalidad
 
 """
 
