@@ -16,8 +16,9 @@ from deap import base, creator, tools, algorithms
 
 from metrics import sm, ifn, ned, icp, hv
 
-GRAPH_FILENAME = "monoliths/jpetstore/graph.pkl"
-METADATA = "monoliths/jpetstore/metadata.json"
+DEMO = True
+GRAPH_FILENAME = "monoliths/cargo/graph.pkl"
+METADATA = "monoliths/cargo/metadata.json"
 
 POP_SIZE = 200
 
@@ -27,30 +28,21 @@ DEFAULT = {
     "hof_size": 10,
     "mu": POP_SIZE,             # mu siempre es pop_size
     "lambda": POP_SIZE*1.5,     # lambda es una proporción de pop_size, acá va la proporción solamente
-    "mut_prob": 0.1,            # mut_prob y c_x prob se relacionan en cuanto a que tienen que sumar 1 o menos.
-    "cx_prob": 0.9,             # si hacemos que sume 1, solo debe setearse una. tenemos dos variables a cambiar.
-    "normalize_obj": False,     # este hay que arreglarlo
-    "proportional_NED": True,   # este anda bárbaro, podría variarse?
-    "verbose": False,           # este se va
-    "new_representation": True,
+    "mut_prob": 0.9,            # mut_prob y c_x prob son complementarios (suman 1.0)
+    "cx_prob": 0.1,
+    "proportional_NED": True,   # modificación #1 
+    "new_representation": True, # modificación #2
 }
 
 with open(GRAPH_FILENAME, 'rb') as file:
     graph = pickle.load(file)
-    #plt.figure(figsize=(10, 8))
-    #pos = nx.spring_layout(graph, seed=42)  # layout más legible para grafos pequeños
-    #nx.draw(graph, pos, with_labels=True, node_size=500, node_color="skyblue", font_size=8)
-    #plt.show()
-
-    #print(type(graph))
-    #time.sleep(10)
     nodes_to_remove = [node for node in graph.nodes if 'test' in node.lower() or 'transition' in node.lower()]
     graph.remove_nodes_from(nodes_to_remove)
 
 N_OBJECTIVES = 4                # NED, SM, ICP, IN
 
-# estos valores se extraen de lo que sea que devuelva montecarlo
-MINS = [0.0,0.0,0.0,0.4] #[0.0,0.0,0.0,0.4] - [ 0.0, 0.0, 0.3, 0.6]    # Para normalización
+# pre-calentamiento con Montecarlo
+MINS = [0.0,0.0,0.0,0.0] #[0.0,0.0,0.0,0.4] - [ 0.0, 0.0, 0.3, 0.6]    # Para normalización
 MAXS = [1.0,0.5838,0.7826087,2.5]   #[1.0,0.7542,0.7826087,5.0]#[ 1.7, 0.7, 0.8, 2.0]    # Para normalización
 
 N_CLASSES = len(graph.nodes)    # 24
@@ -60,7 +52,7 @@ CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)} # mapeo de clase
 time.sleep(10)
 
 MAX_MICROSERVICES = N_CLASSES   # máxima cantidad de bins: 24 (caso extremo, una clase por microservicio)
-P = 12  # c'est quoi?
+P = 12  
 OBJECTIVES = {      # mapeo de objetivos con identificadores
     0: 'NED',
     1: 'SM',
@@ -71,7 +63,7 @@ OBJECTIVES = {      # mapeo de objetivos con identificadores
 # parametrizar "mapper", porque en cargo es "repository". esta ligado a la instancia.
 def validate_mapper_constraint(individual):
     microservice_to_tables = defaultdict(set)
-    mapper_classes = {i for i, cls in CLASS_MAPPING.items() if "mapper" in cls.lower() and not "test" in cls.lower()}
+    mapper_classes = {i for i, cls in CLASS_MAPPING.items() if "repository" in cls.lower() and not "test" in cls.lower()}
     for class_idx, microservice_id in enumerate(individual):
         if class_idx in mapper_classes:
             microservice_to_tables[microservice_id].add(class_idx)
@@ -97,9 +89,6 @@ def denormalize(fitness):
     return [v * (ma - mi) + mi for v, mi, ma in zip(fitness, MINS, MAXS)]
 
 
-
-
-
 def evaluate(individual):
 
     partitions = individual_to_microservices(individual)    # pasa de lista a diccionario
@@ -114,13 +103,7 @@ def evaluate(individual):
 
     values = [ned_value, sm_value, icp_value, in_value]
 
-    if DEFAULT["normalize_obj"]:
-        values = normalize(values)
-
     return tuple(values)
-
-
-
 
 def individual_to_microservices(individual):
     partitions = defaultdict(list)
@@ -214,7 +197,7 @@ def configure_nsga_iii(pop_size=100):
     # Maximized SM, minimized IN, minimized NED, minimized ICP
     if not DEFAULT["new_representation"]:
         creator.create("FitnessMulti", base.Fitness, weights=(-1.0, +1.0, -1.0, -1.0))
-        creator.create("Individual", Partition, fitness=creator.FitnessMulti)
+        creator.create("Individual", list, fitness=creator.FitnessMulti)
         toolbox = base.Toolbox()
         toolbox.register("attr_int", random.randint, 0, MAX_MICROSERVICES - 1)
         toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, n=N_CLASSES)
@@ -278,11 +261,12 @@ def calculate_hv(pareto_front):
     ref_point = np.max(front_min, axis=0) * 1.1  
 
     hv = HV(ref_point=ref_point)
-    if DEFAULT["verbose"]:
+    """
         print("front (original):\n", normalized_front)
         print("front_min (to minimiza):\n", front_min)
         print("ref_point:", ref_point)
         print("any(front_min > ref_point):", np.any(front_min > ref_point))
+    """
 
     hv_value = hv(front_min)
     #print("Hypervolume:", hv_value)
@@ -312,7 +296,7 @@ def run_ea(seed=None, parameters = {}):
     # ejecución
     population, logbook = algorithms.eaMuPlusLambda(population, toolbox, mu=int(parameters["mu"]), lambda_=int(parameters["lambda"]), cxpb=cx_prob,
                                                     mutpb=mut_prob,
-                                                    ngen=num_generations, stats=stats, halloffame=hof, verbose=parameters["verbose"])
+                                                    ngen=num_generations, stats=stats, halloffame=hof, verbose=False)
 
     pareto_front = tools.sortNondominated(population, len(population), first_front_only=True)[0]
 
@@ -322,35 +306,10 @@ def run_ea(seed=None, parameters = {}):
     return population, logbook, hof, pareto_front, hv
 
 
-if __name__ == "_main__":
-    
-    ind1 = [9, 2, 0, 18, 9, 13, 12, 16, 11, 4, 23, 6, 8, 14, 0, 7, 19, 14, 0, 3, 2, 22, 15, 13]
-    ind2 = [22, 8, 0, 10, 12, 0, 4, 23, 12, 6, 21, 0, 5, 20, 14, 23, 13, 2, 13, 22, 8, 15, 19, 22]
 
-    print()
-    print("IND1")
-    print("ned: ",ned(individual_to_microservices(ind1),N_CLASSES))
-    print("sm:  ",sm(individual_to_microservices(ind1),graph))
-    print("ifn: ",ifn(individual_to_microservices(ind1),graph))
-    print("icp: ",icp(individual_to_microservices(ind1),graph))
-    print()
-    print("IND2")
-    print("ned: ",ned(individual_to_microservices(ind2),N_CLASSES))
-    print("sm:  ",sm(individual_to_microservices(ind2),graph))
-    print("ifn: ",ifn(individual_to_microservices(ind2),graph))
-    print("icp: ",icp(individual_to_microservices(ind2),graph))
-    print()
+
 
 if __name__ == "__main__":
-
-    mins_of_NED = []
-    maxs_of_NED = []
-    mins_of_SM = []
-    maxs_of_SM = []
-    mins_of_ICP = []
-    maxs_of_ICP = []
-    mins_of_IN = []
-    maxs_of_IN = []
 
     seeds = [42,12,23,1,79,99,52,56,54,77,40,10,20,10,70,90,50,6,4,7]
     seeds = [42]
@@ -360,40 +319,8 @@ if __name__ == "__main__":
 
         pop, logbook, hof, pareto_front, hv_ = run_ea(23,DEFAULT)
 
-        if DEFAULT["normalize_obj"]:
-            for ind in pop:
-                ind.fitness.values = denormalize(ind.fitness.values)
-
         print("Densidad del frente de pareto: ",(len(pareto_front)/len(pop))*100,"%")
-        """
-                generations = logbook.select("gen")
-                avg = np.array(logbook.select("avg"))
-                min_ = np.array(logbook.select("min"))
-                max_ = np.array(logbook.select("max"))
-
-                mins_ = np.min(min_, axis=0)   # toma el mínimo a lo largo de todas las generaciones para cada columna
-                maxs_ = np.max(max_, axis=0)   # toma el máximo a lo largo de todas las generaciones para cada columna
-
-                mins_of_NED.append(mins_[0])
-                maxs_of_NED.append(maxs_[0])
-                mins_of_SM.append(mins_[0])
-                maxs_of_SM.append(maxs_[0])
-                mins_of_ICP.append(mins_[0])
-                maxs_of_ICP.append(maxs_[0])
-                mins_of_IN.append(mins_[0])
-                maxs_of_IN.append(maxs_[0])
-
-                print("Mínimos globales por objetivo:", mins_)
-                print("Máximos globales por objetivo:", maxs_)
-            
-            mins = [min(mins_of_NED),min(mins_of_SM),min(mins_of_ICP),min(mins_of_IN)]
-            maxs = [min(maxs_of_NED),min(maxs_of_SM),min(maxs_of_ICP),min(maxs_of_IN)]
-
-            print("OUTPUT")
-            print(mins)
-            print(maxs)
-
-        """
+    
         # Una vez finalizada la ejecución:
         pop_fit = np.array([ind.fitness.values for ind in pop])
         pareto_solutions = [ind.fitness.values for ind in pareto_front]

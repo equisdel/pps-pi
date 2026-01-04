@@ -4,7 +4,7 @@ import numpy as np
 import ast
 
 # lectura y escritura de datos en formato .csv
-ORIG_OUTPUT_PATH = "Y_results.csv"
+ORIG_OUTPUT_PATH = "../backup/Y_results.csv"
 DEST_OUTPUT_PATH = "Y_PF.csv"
 OUTPUT_CONFIG = {'drop_errors': True, 'save_to_csv': True}
 
@@ -22,9 +22,9 @@ def get_output(orig_path=ORIG_OUTPUT_PATH,dest_path=DEST_OUTPUT_PATH,config=OUTP
 
     return df
 
-ORIG = "Y_PF_nano.csv"
+#ORIG = "Y_PF_nano.csv"
 
-df = pd.read_csv(ORIG)
+df = pd.read_csv(ORIG_OUTPUT_PATH)
 
 def _parse_pf_value(v):
     try:

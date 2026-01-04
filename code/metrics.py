@@ -84,8 +84,9 @@ def sm(partitions, graph):
 
     denominator = (K * (K - 1)) / 2
     coupling_term = coupling_sum / denominator if denominator != 0 else 0
-
-    return round(cohesion_term - coupling_term, 4)
+    
+    structural_modularity = round(cohesion_term - coupling_term, 4)
+    return structural_modularity if structural_modularity>0 else 0
 
 def icp(partitions, graph):
     total_dependencies = graph.number_of_edges()

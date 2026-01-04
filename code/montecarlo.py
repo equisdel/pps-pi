@@ -23,7 +23,7 @@ from sklearn.preprocessing import StandardScaler
 from scipy import stats
 from mondec import evaluate, new_evaluate, MAX_MICROSERVICES, N_CLASSES, OBJECTIVES, init_partition
 
-M = 1000    # muestras de Monte Carlo
+M = 1000000     # muestras de Monte Carlo
 SEED = 42
 
 def plot_obj_distribution(objs):
