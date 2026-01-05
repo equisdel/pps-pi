@@ -2,14 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import pandas as pd
-
-
-OBJECTIVES = {
-    0: 'NED',
-    1: 'SM',
-    2: 'ICP',
-    3: 'IN',
-}
+from config import OBJECTIVES
 
 
 def plot_evolution(generations, avg, min_, max_):

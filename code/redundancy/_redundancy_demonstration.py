@@ -1,4 +1,36 @@
 import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/redundancy.txt")
+
+print(np.mean(df["red_dup"]))
+print(np.mean(df["red_sim"]))
+print(np.mean(df["red_total"]))
+print(np.std(df["red_total"]))
+
+print(df.head(10))
+
+import matplotlib.pyplot as plt
+#print(df["red_total"])
+#print(np.array(df["red_total"]))
+
+
+mean = np.mean(df["red_total"])
+plt.hist(x=np.array(df["red_total"]),range=[0,1],edgecolor="black",alpha=0.7)
+plt.ylabel("Ocurrencias")
+plt.xlabel("Redundancia")
+plt.title("Histograma de Redundancia")
+plt.annotate(
+    f"Promedio: {mean:.4f}",
+    xy=(mean, 150),          # punto al que apunta (ajusta Y según tu histograma)
+    xytext=(mean+0.05, 180), # posición del cartel
+    arrowprops=dict(arrowstyle="->", color="red"),
+    bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="red"),
+    color="red"
+)
+plt.axvline(np.mean(df["red_total"]), color='red', linestyle='--', linewidth=2, label=f'Media: {mean:.4f}')
+#plt.axvline(median, color='green', linestyle='--', linewidth=2, label=f'Mediana: {median:.4f}')
+plt.show()
 
 PATH = "ideal_pf_final.txt"
 
@@ -85,23 +117,32 @@ for idx, (_, row) in enumerate(df.iterrows()):
         canon_map[canon]["size"] = len(canon)
     
 
-for canon, data in canon_map.items():
+OUTPUT = "redundant_canonical_solutions.txt"
 
-    if data["counter"] > 1:
-        print("Canonical partition:")
-        print(sorted([sorted(b) for b in canon]))
-        print("Size:",data["size"])
-        print("Count:", data["counter"])
-        print("Rows:")
-        for r in data["rows"]:
-            print(df.iloc[r].values)
-        print("fitness:",data["fitness"])
-        print("-" * 60)
+with open(OUTPUT, "w", encoding="utf-8") as f:
 
+    for canon, data in canon_map.items():
 
-print(f"\nLa cantidad de soluciones únicas es: {len(canon_map)}\n")
-print(f"En total existen: {int(df.size/df.columns.size)}")
-print(f"Es decir que la redundancia es de: {round(((180-82)/180)*100,2)}%")
+        if data["counter"] > 1:
+            f.write("Canonical partition:\n")
+            f.write(f"{sorted([sorted(b) for b in canon])}\n")
+            f.write(f"Size: {data['size']}\n")
+            f.write(f"Count: {data['counter']}\n")
+            f.write("Rows:\n")
+
+            for r in data["rows"]:
+                f.write(f"{df.iloc[r].values}\n")
+
+            f.write(f"Fitness: {data['fitness']}\n")
+            f.write("-" * 60 + "\n")
+
+    f.write("\n")
+    f.write(f"La cantidad de soluciones únicas es: {len(canon_map)}\n")
+    f.write(f"En total existen: {int(df.size / df.columns.size)}\n")
+    f.write(
+        f"Es decir que la redundancia es de: "
+        f"{round(((180 - 82) / 180) * 100, 2)}%\n"
+    )
 
 import numpy as np
 
@@ -152,3 +193,14 @@ sns.clustermap(C, cmap="viridis")
 plt.title("Class co-assignment frequency")
 plt.show()
 
+
+counts = [d["counter"] for d in canon_map.values()]
+print("Total canónicas:", len(canon_map))
+print("Únicas (counter=1):", sum(c == 1 for c in counts))
+print("Redundantes (counter>1):", sum(c > 1 for c in counts))
+
+# número de filas originales
+print("Filas totales:", len(df))
+
+# suma de counters = filas
+print("Suma de counters:", sum(d["counter"] for d in canon_map.values()))
