@@ -1,7 +1,9 @@
-from config import *
-from instance import *
-from metrics import *
+from deap import creator
 import random
+
+from mondec.config_ea import *
+from mondec.config_instance import *
+from mondec.metrics import *
 
 # Estructura
 class Individual:
@@ -20,8 +22,8 @@ class Individual:
         return isinstance(other, Individual) and self.blocks == other.blocks
 
 # Generación aleatoria
-def init_individual(n_classes, k_range=(2,10)):
-    k = random.randint(*k_range)
+def init_individual(n_classes:int, seed=42):
+    k = random.randint(*(1,n_classes))
     blocks = [[] for _ in range(k)]
 
     for i in range(n_classes):
@@ -29,13 +31,13 @@ def init_individual(n_classes, k_range=(2,10)):
 
     return Individual(blocks)
 
+
 # Traducción a diccionario
 def individual_to_microservices(individual: Individual):
-    partitions = defaultdict(list)
+    partitions = {}
 
     for ms_id, block in enumerate(individual.blocks):
-        for class_id in block:
-            partitions[ms_id].append(CLASS_MAPPING[class_id])
+        partitions[ms_id] = [CLASS_MAPPING[class_id] for class_id in block]
 
     return partitions
 
@@ -50,3 +52,36 @@ def evaluate(individual):
 
     values = (ned_value, sm_value, icp_value, in_value)
     return values
+
+# Operador de mutación
+def mutate(individual):
+    blocks = [set(b) for b in individual.blocks]
+
+    src = random.choice([b for b in blocks if len(b) > 1])
+    dst = random.choice(blocks)
+
+    cls = random.choice(tuple(src))
+    src.remove(cls)
+    dst.add(cls)
+
+    return creator.Individual(blocks),
+
+# Operador de cruzamiento
+def mate(p1, p2):
+    used = set()
+    child_blocks = []
+
+    for b1, b2 in zip(p1.blocks, p2.blocks):
+        block = (set(b1) | set(b2)) - used
+        if block:
+            child_blocks.append(block)
+            used |= block
+
+    remaining = set(range(N_CLASSES)) - used
+    if remaining:
+        child_blocks.append(remaining)
+
+    child1 = creator.Individual(child_blocks)
+    child2 = creator.Individual(child_blocks.copy())
+
+    return child1, child2

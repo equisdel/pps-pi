@@ -1,21 +1,21 @@
 # Librerias Estandar
 import pickle
 import random
-from collections import defaultdict
 
 # Librerias Externas
 import matplotlib
 matplotlib.use("TkAgg")
 import numpy as np
-from pymoo.indicators.hv import HV
 from deap import base, creator, tools, algorithms
 
 # Modulos Locales
-from metrics import sm, ifn, ned, icp
-from hv import calculate_hv
-from instance import *
-from config import *
-from plots import (
+from mondec.representations import Individual as IndividualClass, init_individual, individual_to_microservices, evaluate, mate, mutate
+from mondec.config_ea import *
+from mondec.config_instance import *
+from mondec.initialization import *
+from mondec.evaluation import evaluate
+from mondec.ea_performance import hv
+from mondec.plots import (
     plot_evolution,
     pareto_front_3d,
     plot_pareto_front,
@@ -23,30 +23,30 @@ from plots import (
     plot_parallel_coordinates,
 )
 
-
-if DEFAULT["new_representation"]:
-    print("canonical")
-    from representations.canonical import Individual as IndividualClass, init_individual, individual_to_microservices, evaluate
-    from operators import cx_blocks as mate, mut_move as mutate
-else:
-    print("original")
-    from representations.original import Individual as IndividualClass, init_individual, individual_to_microservices, evaluate
-    from operators import mutate_class_assignment as mutate
-    from deap import tools
-    mate = tools.cxTwoPoint
+def deap_to_mondec(deap_ind):
+    blocks_dict = {}
+    for cls_idx, block_idx in enumerate(deap_ind):
+        blocks_dict.setdefault(block_idx, set()).add(cls_idx)
+    blocks = [list(b) for b in blocks_dict.values()]
+    return IndividualClass(blocks)
 
 
 def configure_nsga_iii(pop_size=100):
     creator.create("FitnessMulti", base.Fitness, weights=(-1.0, +1.0, -1.0, -1.0))
     creator.create("Individual", IndividualClass, fitness=creator.FitnessMulti)
-
     toolbox = base.Toolbox()
-    toolbox.register("individual", lambda: init_individual(N_CLASSES))
-    toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)
+
+    if DEFAULT["preheat_with_MC"]:
+        from mondec.initialization import run
+        _, _, INIT_POP = run(creator)
+        toolbox.register("population", lambda: INIT_POP)
+    else:
+        toolbox.register("individual", lambda: init_individual(N_CLASSES))
+        toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)
+
     toolbox.register("mate", mate)
     toolbox.register("mutate", mutate)
     toolbox.register("evaluate", evaluate)
-
 
     ref_points = tools.uniform_reference_points(nobj=N_OBJECTIVES, p=P)
     toolbox.register("select", tools.selNSGA3, ref_points=ref_points)
@@ -82,17 +82,17 @@ def run_ea(seed=None, parameters = {}):
 
     pareto_front = tools.sortNondominated(population, len(population), first_front_only=True)[0]
 
-    hv = calculate_hv(pareto_front)
+    pf_hv = hv(pareto_front)
 
-    return population, logbook, hof, pareto_front, hv
+    return population, logbook, hof, pareto_front, pf_hv
 
 if __name__ == "__main__":
-    seeds = [42]
+    seeds = [23]
 
     for i, s in enumerate(seeds):
         print(f"EJECUCION ({i}/{len(seeds)}), SEMILLA: {s}")
 
-        pop, logbook, hof, pareto_front, hv_ = run_ea(s, DEFAULT)
+        pop, logbook, hof, pareto_front, pf_hv = run_ea(s, DEFAULT)
 
         # Pareto front stats
         pareto_solutions = [ind.fitness.values for ind in pareto_front]
@@ -130,7 +130,7 @@ if __name__ == "__main__":
         with open("experiment_database.pkl", "wb") as f:
             pickle.dump(cp, f)
 
-        print("Hypervolume:", hv_)
+        print("Hypervolume:", pf_hv)
         methods = ['M2M', 'FoSCI', 'CoGCN', 'Bunch', 'MEM']
         objectives = list(OBJECTIVES.values())
         scores = [
@@ -144,3 +144,4 @@ if __name__ == "__main__":
         scores.append(medians)
 
         plot_parallel_coordinates(methods, scores, objectives)
+

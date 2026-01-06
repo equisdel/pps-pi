@@ -2,20 +2,21 @@ import random
 import numpy as np
 import time
 import sys
+import json
+from deap import creator, base
 
-from config import DEFAULT, N_OBJECTIVES
-from instance import N_CLASSES, METADATA, INSTANCE
+from mondec.config_ea import DEFAULT, POP_SIZE
+from mondec.config_instance import N_CLASSES, METADATA, INSTANCE, modify_metadata, load_range_from_metadata
+from mondec.representations import init_individual, evaluate
 
-if DEFAULT["new_representation"]:
-    from representations.canonical import init_individual, individual_to_microservices, evaluate
-else:
-    from representations.original import init_individual, individual_to_microservices, evaluate
-
-M = 1000000  # MonteCarlo samples
+M = 100000  # MonteCarlo samples
 SEED = 42
 
-MINS = [0., 0., 0., 0.]  
-MAXS = [1., 0.057, 1., 10.]  
+best_pop_size = []
+weights = (-1,1,-1,-1)
+
+def light_evaluate(fitness,weights):
+    return np.dot(np.array(fitness),np.array(weights))
 
 def progress_bar(i, total, width=30):
     progress = (i + 1) / total
@@ -25,67 +26,91 @@ def progress_bar(i, total, width=30):
     sys.stdout.write(f"\r|{bar}| {percent}% ({i+1}/{total})")
     sys.stdout.flush()
 
+def run(creator):
+
+    BEST = []
+    if DEFAULT["preheat_with_MC"]:
+        M = DEFAULT["MC_samples"]
+        MINS, MAXS, raw_best = run_montecarlo(M)
+        for ind, obj, _ in raw_best:
+            deap_ind = creator.Individual(ind.blocks)
+            deap_ind.fitness.values = obj
+            BEST.append(deap_ind) 
+
+    else:
+        MINS, MAXS = load_range_from_metadata()
+        
+    return MINS, MAXS, BEST
+
 
 def run_montecarlo(m: int = M):
-    random.seed(SEED) 
 
+    actual_mins, actual_maxs = load_range_from_metadata()
+    
+    print(f"\nRunning Monte Carlo with M={m} samples for instance {INSTANCE} (N={N_CLASSES})\n")
+    
     # Generate random individuals
-    individuals = [init_individual(N_CLASSES) for _ in range(m)]
+    individuals = [init_individual(N_CLASSES, SEED) for _ in range(m)]
+    
     objs = []
-
     t0 = time.time()
     for i, ind in enumerate(individuals):
         objs.append(evaluate(ind))
         if i % max(1, m // 100) == 0:
             progress_bar(i, m)
     tf = time.time()
-
-    print()
-    objs = np.array(objs)  # shape: (M, N_OBJECTIVES)
+    print(f"\nMonte Carlo elapsed time: {tf - t0:.2f} seconds")
+    
+    objs = np.array(objs)
     new_mins = np.min(objs, axis=0)
     new_maxs = np.max(objs, axis=0)
-
-    return new_mins, new_maxs, tf - t0
-
-
-if __name__ == "__main__":
-    import json
-
-    # Load old metadata
-    with open(METADATA, "r") as f:
-        metadata = json.load(f)
-
-    order = ["NED", "SM", "ICP", "IN"]
-    old_mins = [metadata["RANGE"]["MIN"][k] for k in order]
-    old_maxs = [metadata["RANGE"]["MAX"][k] for k in order]
-
-    print("Old mins:", old_mins)
-    print("Old maxs:", old_maxs)
-
-    m = 10000  # for testing
-    print(f"\nRunning Monte Carlo with M={m} samples for instance {INSTANCE} (N={N_CLASSES})\n")
-
-    new_mins, new_maxs, elapsed = run_montecarlo(m)
-
-    # Update global MINS and MAXS
+   
     update_needed = False
-    for i in range(N_OBJECTIVES):
-        if new_mins[i] < old_mins[i]:
-            old_mins[i] = new_mins[i]
-            update_needed = True
-        if new_maxs[i] > old_maxs[i]:
-            old_maxs[i] = new_maxs[i]
+    for idx, (am, nm, aM, nM) in enumerate(zip(actual_mins, new_mins, actual_maxs, new_maxs)):
+        print(f"Obj {idx}: actual_min={am}, new_min={nm}, actual_max={aM}, new_max={nM}")
+        if nm < am or nM > aM:
             update_needed = True
 
     if update_needed:
-        print("Updated bounds needed. MINS/MAXS changed.")
+        actual_mins = np.minimum(actual_mins, new_mins)
+        actual_maxs = np.maximum(actual_maxs, new_maxs)
+        print("\nUpdated bounds detected. Writing new MINS/MAXS to metadata.")
+        print("New mins:", actual_mins)
+        print("New maxs:", actual_maxs)
+        
+        objective_names = ["NED", "SM", "ICP", "IN"]  # Keep consistent with metadata
+        new_range = {
+            "RANGE": {
+                "MIN": {name: val for name, val in zip(objective_names, actual_mins)},
+                "MAX": {name: val for name, val in zip(objective_names, actual_maxs)}
+            }
+        }
+        modify_metadata(new_range, "w")
     else:
-        print("No update needed. MINS/MAXS remain the same.")
+        print("\nNo update needed. MINS/MAXS remain the same.")
+    
+    # update en metadata solo si amplia el rango en algún objetivo
+    norm_objs = (objs - actual_mins) / (actual_maxs - actual_mins + 1e-12)
 
-    print("New mins:", old_mins)
-    print("New maxs:", old_maxs)
-    print("Monte Carlo elapsed time:", elapsed, "seconds")
+    light_fitness = [light_evaluate(np.array(i),np.array(weights)) for i in norm_objs]
 
-    # Now update your global MINS and MAXS
-    MINS[:] = old_mins
-    MAXS[:] = old_maxs
+    #print(light_fitness)
+
+    individuals_sorted = sorted(
+        zip(individuals, objs, light_fitness),
+        key= lambda x: x[2],
+        reverse=True
+    )
+
+    print("PEOR: ",individuals_sorted[-1:])
+    best_pop_size = individuals_sorted[0:POP_SIZE]
+
+    from mondec.representations import Individual as IndividualClass
+    
+    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, +1.0, -1.0, -1.0))
+    creator.create("Individual", IndividualClass, fitness=creator.FitnessMulti)
+
+
+    return actual_mins, actual_maxs, best_pop_size
+
+#MINS, MAXS, INIT_POP = run(creator)

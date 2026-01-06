@@ -16,8 +16,8 @@
 
 import numpy as np
 from scipy import stats as sp_stats
-from mondec import run_ea, DEFAULT
-from plots import plot_evolution
+from mondec.ea import run_ea, DEFAULT
+from mondec.plots import plot_evolution
 from scipy.spatial.distance import cdist
 import matplotlib.pyplot as plt
 

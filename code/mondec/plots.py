@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import pandas as pd
-from config import OBJECTIVES
+from mondec.config_ea import OBJECTIVES
 
 
 def plot_evolution(generations, avg, min_, max_):

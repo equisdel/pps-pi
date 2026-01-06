@@ -1,6 +1,6 @@
-from config import *
-from instance import *
-from metrics import *
+from mondec.config_ea import *
+from mondec.config_instance import *
+from mondec.metrics import *
 from collections import defaultdict
 import random
 
@@ -33,3 +33,14 @@ def evaluate(individual):
 
     values = (ned_value, sm_value, icp_value, in_value)
     return values
+
+# Operador de mutación
+def mutate(individual):
+    idx = random.randint(0, N_CLASSES - 1)
+    individual[idx] = random.randint(0, MAX_MICROSERVICES - 1)
+    return (individual,)
+
+# Operador de cruzamiento
+import deap.tools as tools
+def mate(p1,p2):
+    return tools.cxOnePoint(p1,p2)
