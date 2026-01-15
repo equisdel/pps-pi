@@ -10,8 +10,8 @@ DEFAULT = {                     # configuración por defecto
     "cx_prob": 1.0,
     "proportional_NED": True,   # modificación #1 
     "new_representation": True, # modificación #2
-    "preheat_with_MC": False,
-    "MC_samples": 10000
+    "preheat_with_MC": False,   # disabled
+    "MC_samples": 10000000
 }
 
 P = 12      # que es?
