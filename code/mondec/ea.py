@@ -36,13 +36,8 @@ def configure_nsga_iii(pop_size=100):
     creator.create("Individual", IndividualClass, fitness=creator.FitnessMulti)
     toolbox = base.Toolbox()
 
-    if DEFAULT["preheat_with_MC"]:
-        from mondec.initialization import run
-        _, _, INIT_POP = run(creator)
-        toolbox.register("population", lambda: INIT_POP)
-    else:
-        toolbox.register("individual", lambda: init_individual(N_CLASSES))
-        toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)
+    toolbox.register("individual", lambda: init_individual(N_CLASSES))
+    toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)
 
     toolbox.register("mate", mate)
     toolbox.register("mutate", mutate)
@@ -87,61 +82,59 @@ def run_ea(seed=None, parameters = {}):
     return population, logbook, hof, pareto_front, pf_hv
 
 if __name__ == "__main__":
-    seeds = [23]
+    
+    seed = 42
+ 
+    pop, logbook, hof, pareto_front, pf_hv = run_ea(seed, DEFAULT)
 
-    for i, s in enumerate(seeds):
-        print(f"EJECUCION ({i}/{len(seeds)}), SEMILLA: {s}")
+    # Pareto front stats
+    pareto_solutions = [ind.fitness.values for ind in pareto_front]
+    objectives = list(zip(*pareto_solutions))
+    medians = [np.mean(obj) for obj in objectives]
+    print("Pareto medians:", medians)
 
-        pop, logbook, hof, pareto_front, pf_hv = run_ea(s, DEFAULT)
+    # Best individual (from population & HOF)
+    best_decomposition = tools.selBest(pop, k=1)[0]
+    bd_partitions = individual_to_microservices(best_decomposition)  # no conditional
+    print("BEST FROM PARETO FRONT", best_decomposition.fitness, len(bd_partitions), bd_partitions)
 
-        # Pareto front stats
-        pareto_solutions = [ind.fitness.values for ind in pareto_front]
-        objectives = list(zip(*pareto_solutions))
-        medians = [np.mean(obj) for obj in objectives]
-        print("Pareto medians:", medians)
+    best_hof = hof[0]
+    bd_partitions = individual_to_microservices(best_hof)  # unified
+    print("BEST FROM HOF", best_hof.fitness, len(bd_partitions), bd_partitions)
 
-        # Best individual (from population & HOF)
-        best_decomposition = tools.selBest(pop, k=1)[0]
-        bd_partitions = individual_to_microservices(best_decomposition)  # no conditional
-        print("BEST FROM PARETO FRONT", best_decomposition.fitness, len(bd_partitions), bd_partitions)
+    # Logbook stats for plotting
+    generations = logbook.select("gen")
+    avg = np.array(logbook.select("avg"))
+    min_ = np.array(logbook.select("min"))
+    max_ = np.array(logbook.select("max"))
 
-        best_hof = hof[0]
-        bd_partitions = individual_to_microservices(best_hof)  # unified
-        print("BEST FROM HOF", best_hof.fitness, len(bd_partitions), bd_partitions)
+    # Plots
+    plot_evolution(generations, avg, min_, max_)
+    plot_pareto_front(pareto_front)
 
-        # Logbook stats for plotting
-        generations = logbook.select("gen")
-        avg = np.array(logbook.select("avg"))
-        min_ = np.array(logbook.select("min"))
-        max_ = np.array(logbook.select("max"))
+    cp = dict(
+        population=pop,
+        pareto_front=pareto_front,
+        halloffame=hof,
+        logbook=logbook,
+        rndstate=random.getstate()
+    )
 
-        # Plots
-        plot_evolution(generations, avg, min_, max_)
-        plot_pareto_front(pareto_front)
+    with open("experiment_database.pkl", "wb") as f:
+        pickle.dump(cp, f)
 
-        cp = dict(
-            population=pop,
-            pareto_front=pareto_front,
-            halloffame=hof,
-            logbook=logbook,
-            rndstate=random.getstate()
-        )
+    print("Hypervolume:", pf_hv)
+    methods = ['M2M', 'FoSCI', 'CoGCN', 'Bunch', 'MEM']
+    objectives = list(OBJECTIVES.values())
+    scores = [
+        [0.257, 0.054, 0.333, 1.857],   # M2M
+        [0.516, 0.044, 0.478, 3.75],    # FoSCI
+        [0.392, 0.091, 0.582, 2.533],   # CoGCN
+        [0.667, np.nan, 0.477, 7.948],  # Bunch
+        [1.0, 0.124, 0.434, 3.429]     # MEM
+    ]
+    methods.append("Our approach")
+    scores.append(medians)
 
-        with open("experiment_database.pkl", "wb") as f:
-            pickle.dump(cp, f)
-
-        print("Hypervolume:", pf_hv)
-        methods = ['M2M', 'FoSCI', 'CoGCN', 'Bunch', 'MEM']
-        objectives = list(OBJECTIVES.values())
-        scores = [
-            [0.257, 0.054, 0.333, 1.857],   # M2M
-            [0.516, 0.044, 0.478, 3.75],    # FoSCI
-            [0.392, 0.091, 0.582, 2.533],   # CoGCN
-            [0.667, np.nan, 0.477, 7.948],  # Bunch
-            [1.0, 0.124, 0.434, 3.429]     # MEM
-        ]
-        methods.append("Our approach")
-        scores.append(medians)
-
-        plot_parallel_coordinates(methods, scores, objectives)
+    plot_parallel_coordinates(methods, scores, objectives)
 
