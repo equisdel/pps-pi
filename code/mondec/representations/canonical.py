@@ -15,6 +15,9 @@ class Individual:
     def copy(self):
         return Individual(self.blocks)
 
+    def __str__(self):
+        return str([list(block) for block in self.blocks])
+
     def __hash__(self):
         return hash(self.blocks)
 

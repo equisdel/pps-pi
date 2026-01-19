@@ -9,8 +9,7 @@ DEFAULT = {                     # configuración por defecto
     "mut_prob": 0.0,            # mut_prob es complemento de cx_prob (suman 1.0)
     "cx_prob": 1.0,
     "proportional_NED": True,   # modificación #1 
-    "new_representation": True, # modificación #2
-    "preheat_with_MC": False,   # disabled
+    "new_representation": False, # modificación #2
     "MC_samples": 10000000
 }
 

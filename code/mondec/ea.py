@@ -32,8 +32,13 @@ def deap_to_mondec(deap_ind):
 
 
 def configure_nsga_iii(pop_size=100):
-    creator.create("FitnessMulti", base.Fitness, weights=(-1.0, +1.0, -1.0, -1.0))
-    creator.create("Individual", IndividualClass, fitness=creator.FitnessMulti)
+
+    if not hasattr(creator, "FitnessMulti"):
+        creator.create("FitnessMulti",base.Fitness,weights=(-1.0, +1.0, -1.0, -1.0))
+
+    if not hasattr(creator, "Individual"):
+        creator.create("Individual",IndividualClass,fitness=creator.FitnessMulti)
+
     toolbox = base.Toolbox()
 
     toolbox.register("individual", lambda: init_individual(N_CLASSES))
@@ -109,8 +114,8 @@ if __name__ == "__main__":
     max_ = np.array(logbook.select("max"))
 
     # Plots
-    plot_evolution(generations, avg, min_, max_)
-    plot_pareto_front(pareto_front)
+    #plot_evolution(generations, avg, min_, max_)
+    #plot_pareto_front(pareto_front)
 
     cp = dict(
         population=pop,
@@ -136,5 +141,11 @@ if __name__ == "__main__":
     methods.append("Our approach")
     scores.append(medians)
 
-    plot_parallel_coordinates(methods, scores, objectives)
+    #plot_parallel_coordinates(methods, scores, objectives)
+    from redundancy.auxiliar import fitness_values
+    for ind in pareto_front:
+        f1 = np.array(ind.fitness.values)
+        f2 = np.array(fitness_values(list(ind)))
+        print(np.linalg.norm(f1 - f2), f1, f2)
+
 

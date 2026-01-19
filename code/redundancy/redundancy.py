@@ -2,69 +2,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import ast
-
-# lectura y escritura de datos en formato .csv
-ORIG_OUTPUT_PATH = "../backup/Y_results.csv"
-DEST_OUTPUT_PATH = "Y_PF.csv"
-OUTPUT_CONFIG = {'drop_errors': True, 'save_to_csv': True}
-
-def get_output(orig_path=ORIG_OUTPUT_PATH,dest_path=DEST_OUTPUT_PATH,config=OUTPUT_CONFIG):
-
-    df = pd.read_csv(orig_path)
-    df.columns = ['parameters','HV','index', 'pareto front']
-    df = df.drop(columns=['parameters','HV','index'])
-
-    if config['drop_errors']:
-        df = df[df['pareto front'].str.len()!=2]    # frentes de pareto vacíos
-
-    if config['save_to_csv']:
-        df.to_csv(dest_path)
-
-    return df
-
-#ORIG = "Y_PF_nano.csv"
-
-df = pd.read_csv(ORIG_OUTPUT_PATH)
-
-def _parse_pf_value(v):
-    try:
-        if pd.isna(v):
-            return None
-        if isinstance(v, str):
-            return ast.literal_eval(v)
-        return v
-    except Exception:
-        return None
+from redundancy.paths import PF_INPUT_PATH
 
 
-from collections import defaultdict
-
-def unique_genotypes(pf):
-    seen = set()
-    uniq = []
-    for ind in pf:
-        t = tuple(ind)
-        if t not in seen:
-            seen.add(t)
-            uniq.append(ind)
-    return uniq
-
-def canonical_partition(ind):
-    blocks = defaultdict(list)
-    for i, v in enumerate(ind):
-        blocks[v].append(i)
-    return frozenset(frozenset(b) for b in blocks.values())
-
-def unique_canonicals(pf):
-    seen = set()
-    for ind in pf:
-        seen.add(canonical_partition(ind))
-    return seen
-
-
-pareto_list = df['pareto front'].apply(_parse_pf_value).dropna().tolist()
-print("step1: ok")
-
+#pareto_list = df['pareto front'].apply(_parse_pf_value).dropna().tolist()
+#print("step1: ok")
+"""
 
 redundancy_rows = []
 
@@ -110,6 +53,7 @@ print("Total individuos (con repetidos):", len(all_individuals))
 print("step2: ok")
 
 
+"""
 def unique_individuals(individuals):
     seen = set()
     unique = []
@@ -133,8 +77,9 @@ print(len(all_individuals))
 # 3. Guardar a txt
 save_individuals_txt(all_individuals, "all_unique_individuals.txt")
 print("step4: ok")
-
+"""
 # 4. Calcular fitness (ned, sm, icp, ifn)
+"""
 import pickle
 from metrics import ned,sm,icp,ifn
 
@@ -265,4 +210,6 @@ with open("ideal_pf_repr.txt", "w", encoding="utf-8") as fh:
 
 print("ideal_pf saved to ideal_pf_repr.txt")
 print("end")
+"""
+"""
 """

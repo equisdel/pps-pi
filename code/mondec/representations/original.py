@@ -6,7 +6,9 @@ import random
 
 # Estructura
 class Individual(list):
-    pass
+
+    def __str__(self):
+        return list.__str__(self)
 
 # Generación aleatoria
 def init_individual(n_classes):

@@ -1,7 +1,7 @@
 import pickle
 import json
 import numpy as np
-from mondec.config_ea import N_OBJECTIVES 
+from mondec.config_ea import N_OBJECTIVES, OBJECTIVES
 
 INSTANCE = "jpetstore"
 GRAPH_FILENAME = f"monoliths/{INSTANCE}/graph.pkl"
@@ -22,7 +22,7 @@ def load_range_from_metadata():
     try:
         with open(METADATA, "r") as f:
             metadata = json.load(f)
-        order = ["NED", "SM", "ICP", "IN"]  # Ensure consistent order
+        order = list(OBJECTIVES.values())
         MINS = [metadata["RANGE"]["MIN"][k] for k in order]
         MAXS = [metadata["RANGE"]["MAX"][k] for k in order]
         return np.array(MINS), np.array(MAXS)
@@ -62,3 +62,6 @@ def modify_metadata(new_data, mode="w"):
 
     except Exception as e:
         print("Error modifying metadata:", e)
+
+if __name__=="__main__":
+    print(load_range_from_metadata())
