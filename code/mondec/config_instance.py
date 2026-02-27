@@ -1,9 +1,9 @@
 import pickle
 import json
 import numpy as np
-from mondec.config_ea import N_OBJECTIVES, OBJECTIVES
+#from mondec.config_ea import N_OBJECTIVES, OBJECTIVES
 
-INSTANCE = "jpetstore"
+INSTANCE = "cargo"
 GRAPH_FILENAME = f"monoliths/{INSTANCE}/graph.pkl"
 METADATA = f"monoliths/{INSTANCE}/metadata.json"
 
@@ -14,10 +14,11 @@ nodes_to_remove = [node for node in graph.nodes if 'test' in node.lower() or 'tr
 graph.remove_nodes_from(nodes_to_remove)
 
 N_CLASSES = len(graph.nodes)
+print(N_CLASSES)
 CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)}
 MAX_MICROSERVICES = N_CLASSES
 
-
+"""
 def load_range_from_metadata():
     try:
         with open(METADATA, "r") as f:
@@ -63,5 +64,7 @@ def modify_metadata(new_data, mode="w"):
     except Exception as e:
         print("Error modifying metadata:", e)
 
+"""
 if __name__=="__main__":
-    print(load_range_from_metadata())
+    print()
+

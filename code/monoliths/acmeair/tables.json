@@ -1,0 +1,16 @@
+{
+  "class:com.acmeair.mongo.services.BookingServiceImpl": [
+    "table:BOOKING"
+  ],
+  "class:com.acmeair.mongo.services.FlightServiceImpl": [
+    "table:FLIGHT",
+    "table:FLIGHT_SEGMENT",
+    "table:AIRPORT_CODE_MAPPING"
+  ],
+  "class:com.acmeair.mongo.services.AuthServiceImpl": [
+    "table:CUSTOMER"
+  ],
+  "class:com.acmeair.mongo.services.CustomerServiceImpl": [
+    "table:CUSTOMER"
+  ]
+}
