@@ -1,5 +1,7 @@
 import numpy as np
 from scipy import stats as sp_stats
+import csv
+import json
 from mondec.ea import run_ea, DEFAULT
 from mondec.plots import plot_evolution
 from scipy.spatial.distance import cdist
@@ -112,11 +114,33 @@ def run_uncertainty(N=30,params=DEFAULT):
 
     seeds = [x for x in range(N)]
     hv_values = []
+    hv_by_run = {}
+    hv_long_rows = []
 
     for i, seed in enumerate(seeds):
         progress_bar(i,N)
-        _, _, _, _, hv = run_ea(seed, params)
+        _, logbook, _, _, hv = run_ea(seed, params)
         hv_values.append(hv)
+        gens = logbook.select("gen")
+        hv_series = logbook.select("hv")
+
+        hv_by_run[str(i)] = {
+            "seed": seed,
+            "hv_final": hv,
+            "generations": gens,
+            "hv_per_generation": hv_series,
+        }
+
+        for gen, hv_gen in zip(gens, hv_series):
+            hv_long_rows.append([i, seed, gen, hv_gen, hv])
+
+    with open("uncertainty/hv_by_generation.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["run_id", "seed", "generation", "hv", "hv_final"])
+        writer.writerows(hv_long_rows)
+
+    with open("uncertainty/hv_by_run.json", "w", encoding="utf-8") as f:
+        json.dump(hv_by_run, f, indent=2)
 
     return hv_values
 

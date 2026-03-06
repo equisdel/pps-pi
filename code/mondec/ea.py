@@ -59,11 +59,13 @@ def run_ea(seed=None, parameters = {}):
     # inicialización del algoritmo genético: operadores, individuos y población inicial
     toolbox = configure_nsga_iii(int(parameters["pop_size"]))  
     # preparación de los datos a extraer/visualizar
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", np.mean, axis=0)
-    stats.register("std", np.std, axis=0)
-    stats.register("min", np.min, axis=0)
-    stats.register("max", np.max, axis=0)
+    stats = tools.Statistics(lambda ind: ind)
+    stats.register("avg", lambda inds: np.mean([ind.fitness.values for ind in inds], axis=0))
+    stats.register("std", lambda inds: np.std([ind.fitness.values for ind in inds], axis=0))
+    stats.register("min", lambda inds: np.min([ind.fitness.values for ind in inds], axis=0))
+    stats.register("max", lambda inds: np.max([ind.fitness.values for ind in inds], axis=0))
+    stats.register("hv", lambda inds: hv(tools.sortNondominated(list(inds), len(inds), first_front_only=True)[0]),
+    )
     population = toolbox.population()  # Population size
 
     for ind in population:

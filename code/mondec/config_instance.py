@@ -1,9 +1,9 @@
 import pickle
 import json
 import numpy as np
-#from mondec.config_ea import N_OBJECTIVES, OBJECTIVES
+from mondec.config_ea import N_OBJECTIVES, OBJECTIVES
 
-INSTANCE = "cargo"
+INSTANCE = "jpetstore"
 GRAPH_FILENAME = f"monoliths/{INSTANCE}/graph.pkl"
 METADATA = f"monoliths/{INSTANCE}/metadata.json"
 
@@ -18,7 +18,6 @@ print(N_CLASSES)
 CLASS_MAPPING = {i: node for i, node in enumerate(graph.nodes)}
 MAX_MICROSERVICES = N_CLASSES
 
-"""
 def load_range_from_metadata():
     try:
         with open(METADATA, "r") as f:
@@ -31,6 +30,7 @@ def load_range_from_metadata():
         print("ERROR: no range or no metadata file for this instance:", e)
         return np.zeros(N_OBJECTIVES), np.zeros(N_OBJECTIVES)
 
+"""
 def modify_metadata(new_data, mode="w"):
 
     try:

@@ -70,11 +70,13 @@ def compute_redundancy(idx,pf):
         round(red_total,4)
     ]
 
+"""
 def compute_individuals(path=HASH_PATH,pf):
     # saves it to all_individuals.txt: 
     # hash structure
     # either creates them or updates their info
     pass
+"""
 
 def process_output(orig_path=PF_INPUT_PATH):
 

@@ -9,10 +9,11 @@ PROBLEM = {     # for Saltelli sampling
         [50, 1000],   # mu
         [1.0, 3.0],   # lambda / mu
         [0.0, 1.0],   # mutation probability
-    ]
+    ],
+    'base_samples': 6,
 }
 
-def sample(n_base_samples=1024, seed=42, calc_second_order=False):
+def sample(n_base_samples=PROBLEM['base_samples'], seed=42, calc_second_order=False):
 
     np.random.seed(seed)
 

@@ -1,13 +1,13 @@
 from mondec.config_ea import DEFAULT
 from mondec.ea import run_ea
-from sensitivity.paths import X_INPUT_PATH, Y_OUTPUT_PATH, PF_OUTPUT_PATH
+from sensitivity.paths import X_INPUT_PATH, Y_OUTPUT_PATH, PF_OUTPUT_PATH, HV_GEN_OUTPUT_PATH
 from sensitivity.saltelli import sample, decode_params, PROBLEM
 from SALib.analyze import sobol
 
 import os
 import numpy as np
 
-# supports multicore
+# does not support multicore yet
 CORES = 1       # range: [1,N], N: max number of cores
 CORE_ID = 1     # range: [1,CORES]
 
@@ -24,7 +24,7 @@ def run():
     if not has_X:
         print("Sampling...")
         X = sample(
-            n_base_samples=1024,
+            n_base_samples=PROBLEM['base_samples'],
             seed=SEED,
             calc_second_order=False
         )   # saved in X.txt
@@ -46,10 +46,12 @@ def run():
         Y = np.zeros(runs)
         default = DEFAULT
 
-        with open(Y_OUTPUT_PATH, "w", newline="") as f:
+        with open(Y_OUTPUT_PATH, "w", newline="") as f, open(HV_GEN_OUTPUT_PATH, "w", newline="") as hv_f:
             
             writer = csv.writer(f)
             writer.writerow(["id","mu","lambda","mut_prob","cx_prob","HV"])
+            hv_writer = csv.writer(hv_f)
+            hv_writer.writerow(["id","generation","HV","mu","lambda","mut_prob","cx_prob"])
 
             if CORES==1:
         
@@ -59,10 +61,15 @@ def run():
                     params = decode_params(x, default)
 
                     try:
-                        _, _, _, pf, hv = run_ea(SEED, params)
+                        _, logbook, _, pf, hv = run_ea(SEED, params)
                         writer.writerow([i, params["mu"], params["lambda"], params["mut_prob"], params["cx_prob"], round(hv,4)])
                         pf_dict[str(i)] = [ind.__str__() for ind in pf] 
                         Y[i] = round(hv,4)
+                        for gen, hv_gen in zip(logbook.select("gen"), logbook.select("hv")):
+                            hv_writer.writerow([
+                                i, gen, round(hv_gen, 6),
+                                params["mu"], params["lambda"], params["mut_prob"], params["cx_prob"]
+                            ])
                     except ValueError:
                         writer.writerow([i, params["mu"], params["lambda"], params["mut_prob"], params["cx_prob"], -1.0])
                         pf_dict[str(i)] = []
