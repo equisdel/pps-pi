@@ -42,20 +42,6 @@ def plot_pareto_front(pareto_front):
     #plt.savefig('pareto_front.png', bbox_inches='tight')
     plt.show()
 
-"""
-def plot_pareto_v2(pareto_front):
-    pareto_array = np.array([ind.fitness.values for ind in pareto_front])
-
-    # Convert to DataFrame for easier handling with seaborn
-    df = pd.DataFrame(pareto_array, columns=list(OBJECTIVES.values()))
-
-    # Create pairwise scatter plots
-    sns.pairplot(df)
-    plt.suptitle("Pareto Front (Pairwise Scatter Plots)", y=1.02)
-    plt.tight_layout()
-    #plt.savefig('pareto_front_pairwise.png', bbox_inches='tight')
-    plt.show()
-"""
 
 def pareto_front_3d(pareto_front):
     # Assuming 'pareto_front' contains the Pareto front individuals

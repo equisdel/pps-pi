@@ -1,4 +1,9 @@
-X_INPUT_PATH = "sensitivity/data/X.txt"
-Y_OUTPUT_PATH = "sensitivity/data/Y.csv"
-PF_OUTPUT_PATH = "redundancy/data/PF.json"
-HV_GEN_OUTPUT_PATH = "sensitivity/data/HV_by_generation.csv"
+from pathlib import Path
+
+
+DATA_DIR = Path(__file__).resolve().parent / "data"
+
+X_INPUT_PATH = str(DATA_DIR / "X.txt")
+Y_OUTPUT_PATH = str(DATA_DIR / "Y.csv")
+PF_OUTPUT_PATH = str(DATA_DIR / "PF.json")
+HV_GEN_OUTPUT_PATH = str(DATA_DIR / "HV_by_generation.csv")

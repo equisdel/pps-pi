@@ -10,3 +10,4 @@ individual_to_microservices = _module.individual_to_microservices
 evaluate = _module.evaluate
 mutate = _module.mutate
 mate = _module.mate
+clone = _module.Individual.copy

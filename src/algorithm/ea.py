@@ -11,7 +11,7 @@ from algorithm.representations import Individual as IndividualClass, init_indivi
 from algorithm.config import *
 from algorithm.initialization import *
 from algorithm.fitness import evaluate
-from algorithm.hv import hv
+from algorithm.quality_indicators import hv
 
 def configure_nsga_iii(pop_size):
 
@@ -26,6 +26,7 @@ def configure_nsga_iii(pop_size):
     toolbox.register("individual", lambda: init_individual(N_CLASSES))
     toolbox.register("population", tools.initRepeat, list, toolbox.individual, n=pop_size)
 
+    #toolbox.register("clone", clone)        # usado internamente en VarOr
     toolbox.register("mate", mate)
     toolbox.register("mutate", mutate)
     toolbox.register("evaluate", evaluate)

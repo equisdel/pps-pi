@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 from scipy.ndimage import uniform_filter1d
 from SALib.analyze import sobol
-from sensitivity.run import PROBLEM
-from sensitivity.paths import Y_OUTPUT_PATH
-from sensitivity.sobol_report import print_sobol_report, plot_sobol_indices
+from experiments.sensitivity.run import PROBLEM
+from experiments.sensitivity.paths import Y_OUTPUT_PATH
+from experiments.sensitivity.sobol_report import print_sobol_report, plot_sobol_indices
 from matplotlib.animation import FuncAnimation
 
 
@@ -131,10 +131,6 @@ if __name__=="__main__":
 
 
     plot_output_3d(output)
-    #plot_histogram_hv(output)
-    #scatterplot('mu',mu_values,y)
-    #scatterplot('lambda',lambda_values,y)
-    #scatterplot('prob de mutación',prob_values,y)
     describe_elite(output)
     describe_bottom(output)
 
@@ -142,7 +138,5 @@ if __name__=="__main__":
     y = y.to_numpy()
     Si = sobol.analyze(PROBLEM, y, calc_second_order=False)
     print(Si)
-    #plot_sobol_indices(PROBLEM, Si)
     print_sobol_report(PROBLEM, Si)
-    #plot_sobol_indices(PROBLEM, Si)
     print(np.mean(output["HV"]))
