@@ -99,13 +99,16 @@ This is loaded dynamically at runtime via `algorithm.representations`, which act
 
 ## Data
 
-Precomputed experiment outputs are not included in this repository due to file size. Expected paths:
+Due to file size limitations, precomputed experiment outputs are not included in this repository.
 
-- `src/experiments/sensitivity/data/` — Saltelli samples, HV outputs
-- `src/experiments/redundancy/data/` — redundancy CSVs, HV-by-generation files
+The code expects the following directory structure:
+- `src/experiments/sensitivity/data/` — Saltelli samples and hypervolume (HV) outputs  
+- `src/experiments/redundancy/data/` — redundancy metrics and HV-by-generation files  
 
-If you need access to the raw data, contact the authors.
+The full dataset is available upon request or can be downloaded from:
+https://drive.google.com/drive/folders/1Mva7pJuFQInTT0zM-7J_xDfha0D9mwM7?usp=drive_link
 
+After downloading, place the files in the corresponding directories listed above.
 ---
 
 ## Monolith instances
