@@ -21,3 +21,15 @@ outputs/
 
 # Logs
 *.log
+
+# Ignore all heavy data
+data/
+
+# Ignore large file types
+*.pdf
+*.gif
+*.png
+*.pkl
+
+data/artifacts/PF_jpetstore_original.json
+src/experiments/sensitivity/data/PF_old.json

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("redundancy/data/redundancy.csv")
+df = pd.read_csv("C:/Users/Usuario/Desktop/Delfina/Personal/PPS+PI/src/experiments/redundancy/data/redundancy_jpetstore_canonical.csv")
 
 print(np.mean(df["red_dup"]))
 print(np.mean(df["red_sim"]))

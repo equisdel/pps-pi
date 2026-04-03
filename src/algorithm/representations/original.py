@@ -11,7 +11,12 @@ class Individual(list):
 
 # Generación aleatoria
 def init_individual(n_classes, seed=None):
-    rng = random.Random(seed) if seed is not None else random
+    if isinstance(seed, random.Random):
+        rng = seed
+    elif seed is not None:
+        rng = random.Random(seed)
+    else:
+        rng = random
     return Individual([rng.randint(0, MAX_MICROSERVICES - 1) for _ in range(n_classes)])
 
 # Traducción a diccionario
